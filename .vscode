@@ -1,8 +1,10 @@
 {
-  "search.exclude": {
-    "**/.git": true,
-    "**/tmp": true,
-    "**/dist": true,
-    "**/.turbo": true
-  }
+	"search.exclude": {
+		"**/.git": true,
+		"**/tmp": true,
+		"**/dist": true,
+		"**/.next": true,
+		"**/node_modules": true,
+		"**/.turbo": true
+	}
 }
