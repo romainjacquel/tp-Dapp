@@ -1,0 +1,50 @@
+{
+	"$schema": "./frontend/node_modules/@biomejs/biome/configuration_schema.json",
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": true,
+		"indentStyle": "tab",
+		"indentWidth": 1,
+		"lineWidth": 120
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"noSvgWithoutTitle": "off",
+				"useKeyWithClickEvents": "off",
+				"useKeyWithMouseEvents": "off"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off",
+				"noConsoleLog": "error"
+			},
+			"style": {
+				"useBlockStatements": "off",
+				"useShorthandArrayType": "error",
+				"noShoutyConstants": "off",
+				"noNonNullAssertion": "error",
+				"noImplicitBoolean": "off",
+				"noNegationElse": "error",
+				"useEnumInitializers": "off"
+			},
+			"complexity": {
+				"useSimplifiedLogicExpression": "error"
+			},
+			"correctness": {
+				"noUndeclaredVariables": "warn",
+				"noUnusedVariables": "error"
+			}
+		}
+	},
+	"files": {
+		"ignore": ["./*/dist/*.js", "./*/dist/*.d.ts", "./node_modules", ".next/"]
+	},
+	"javascript": {
+		"globals": ["__ENV__"]
+	}
+}
