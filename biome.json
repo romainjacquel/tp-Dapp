@@ -42,7 +42,15 @@
 		}
 	},
 	"files": {
-		"ignore": ["./*/dist/*.js", "./*/dist/*.d.ts", "./node_modules", ".next/"]
+		"ignore": [
+			"./*/dist/*.js",
+			"./*/dist/*.d.ts",
+			"*/node_modules",
+			"*/.next",
+			"*/typechain-types",
+			"*/artifacts",
+			"*/cache"
+		]
 	},
 	"javascript": {
 		"globals": ["__ENV__"]

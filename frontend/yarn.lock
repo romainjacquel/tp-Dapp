@@ -14,48 +14,6 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@biomejs/biome@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/biome/-/biome-1.3.3.tgz#aeec38fcc5fe2f9ec299c4f66512cc7bd0044ee8"
-  integrity sha512-vTJn7RBzLWIabUuUIoEopO860YyBrbPEu4Pztfd28jRU5QD074hKZ9IQs24pFO6A2R296gaeYmN62f4u7pUruQ==
-  optionalDependencies:
-    "@biomejs/cli-darwin-arm64" "1.3.3"
-    "@biomejs/cli-darwin-x64" "1.3.3"
-    "@biomejs/cli-linux-arm64" "1.3.3"
-    "@biomejs/cli-linux-x64" "1.3.3"
-    "@biomejs/cli-win32-arm64" "1.3.3"
-    "@biomejs/cli-win32-x64" "1.3.3"
-
-"@biomejs/cli-darwin-arm64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-1.3.3.tgz#2efd927d5eef7ce6c874cbda7c05243f689f2d8e"
-  integrity sha512-2X87ZfbmWwe4NGukrUvnoYdI//muSgjNUCAHJ2DO+kS1sB7kDy1s6PN/IYyTJuqRcJtDuOnSpaUDE7KxR1YhtA==
-
-"@biomejs/cli-darwin-x64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-darwin-x64/-/cli-darwin-x64-1.3.3.tgz#abf6b08aac01503a56a85e12cf21057cf1edfe2a"
-  integrity sha512-t+7DWTCbSgHOBcPsGKuwS1qh1z9zbXFK8i8ktE18yW7iF/W0zI62k44fYqYeFJKlb0Q08aqUvez3L+AQJFsn+w==
-
-"@biomejs/cli-linux-arm64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-arm64/-/cli-linux-arm64-1.3.3.tgz#e76b00a50707c4c530306c7a6cdbdc3d32c2d86d"
-  integrity sha512-D8CvXaB8lkXXBQ6B3n0MXSSZFiE60+aNHorBLimVTtKiMod8QvAP425oQFZFul5wMXZqPLGTKFjXbAi/rvnc1A==
-
-"@biomejs/cli-linux-x64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-linux-x64/-/cli-linux-x64-1.3.3.tgz#fd3e4ed41a42805ec289956b32eaec7b6a10aa2f"
-  integrity sha512-bqB05fwJnRZwRlcm/BS/s4qPickqiXZkiU/nOYvHApfsPeqgSHgv5HWoBYuSUjgqBbX3XZJArsC5dCcVW7vAJw==
-
-"@biomejs/cli-win32-arm64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-arm64/-/cli-win32-arm64-1.3.3.tgz#d6f21a838ffc24d10193e70e5feb42c98fbb62fe"
-  integrity sha512-muFOjAv1ONMfaJDlo4Ds+Qb9lkdSLM2XaxOe3AJPejSq3Vi0aRr51ZnE02BofMnL2sVsOA9cO54wibsuTcopbw==
-
-"@biomejs/cli-win32-x64@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-1.3.3.tgz#0186fba137dc4c4d12680d93ab7e3d6bd3e8f57c"
-  integrity sha512-PMkMhS4smmmTMflxuZUx3REFSazEL9xsGscvZO1dKWI4ET23la+KxEM4TlSpjOyO66UerqSkuUlZecn0QhD63A==
-
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.7.2.tgz#7a89bd9e3a06a1f26d4480d8642af33fb0c7e3aa"
@@ -576,9 +534,9 @@
     "@types/node" "*"
 
 "@types/debug@^4.1.7":
-  version "4.1.11"
-  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.11.tgz#b20d24098288f19e48fdf776c5d9ccd024629e4e"
-  integrity sha512-R2qflTjHDs4CL6D/6TkqBeIHr54WzZfIxN729xvCNlYIVp2LknlnCro5Yo3frNaX2E5gO9pZ3/QAPVdGmu+q9w==
+  version "4.1.12"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.12.tgz#a155f21690871953410df4b6b6f53187f0500917"
+  integrity sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==
   dependencies:
     "@types/ms" "*"
 
@@ -1470,9 +1428,9 @@ duplexify@^4.1.2:
     stream-shift "^1.0.0"
 
 electron-to-chromium@^1.4.535:
-  version "1.4.578"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.578.tgz#7a3510f333bcd55e87882799ebeb7518d6ab4d95"
-  integrity sha512-V0ZhSu1BQZKfG0yNEL6Dadzik8E1vAzfpVOapdSiT9F6yapEJ3Bk+4tZ4SMPdWiUchCgnM/ByYtBzp5ntzDMIA==
+  version "1.4.579"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.579.tgz#40ddec29bb5549908e82ccd652cf5da2e5900c23"
+  integrity sha512-bJKvA+awBIzYR0xRced7PrQuRIwGQPpo6ZLP62GAShahU9fWpsNN2IP6BSP1BLDDSbxvBVRGAMWlvVVq3npmLA==
 
 emoji-regex@^8.0.0:
   version "8.0.0"

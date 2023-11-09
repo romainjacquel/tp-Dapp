@@ -1,0 +1,15 @@
+{
+	"scripts": {
+		"code:check": "biome check --verbose .",
+		"code:check:front": "biome check --verbose ./frontend",
+		"code:check:backend": "biome check --verbose ./backend",
+		"code:lint-fix": "biome check --apply --verbose .",
+		"code:lint-fix-unsafe": "biome check --verbose --apply-unsafe --max-diagnostics=200 .",
+		"code:check:types": "tsc -b",
+		"code:check:types:ci": "tsc -b",
+		"code:prettify": "biome format --write --verbose ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.3.3"
+	}
+}
