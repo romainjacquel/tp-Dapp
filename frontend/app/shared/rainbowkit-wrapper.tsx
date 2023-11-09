@@ -30,10 +30,8 @@ const wagmiConfig = createConfig({
 	publicClient,
 });
 
-export const RainbowKitWrapper = ({ children }: RainbowKitWrapperProps) => {
-	return (
-		<WagmiConfig config={wagmiConfig}>
-			<RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
-		</WagmiConfig>
-	);
-};
+export const RainbowKitWrapper = ({ children }: RainbowKitWrapperProps) => (
+	<WagmiConfig config={wagmiConfig}>
+		<RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+	</WagmiConfig>
+);
