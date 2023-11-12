@@ -1,8 +1,4 @@
 {
-	"name": "backend",
-	"version": "1.0.0",
-	"main": "index.js",
-	"license": "MIT",
 	"devDependencies": {
 		"@nomicfoundation/hardhat-chai-matchers": "2.0.0",
 		"@nomicfoundation/hardhat-ethers": "3.0.0",
@@ -13,7 +9,7 @@
 		"@typechain/hardhat": "8.0.0",
 		"@types/chai": "4.2.0",
 		"@types/mocha": "9.1.0",
-		"@types/node": "20.9.0",
+		"@types/node": "16.0.0",
 		"chai": "4.2.0",
 		"ethers": "6.4.0",
 		"hardhat": "2.19.0",
