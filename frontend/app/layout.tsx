@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import { AppContextWrapper } from "./context";
 import { RainbowKitWrapper } from "./shared/rainbowkit-wrapper";
 
 type RootLayoutProps = {
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: RootLayoutProps) => (
 	<html lang="en">
 		<body className={inter.className}>
-			<RainbowKitWrapper>{children}</RainbowKitWrapper>
+			<RainbowKitWrapper>
+				<AppContextWrapper>{children}</AppContextWrapper>
+			</RainbowKitWrapper>
 		</body>
 	</html>
 );

@@ -5,18 +5,19 @@ import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ReactNode } from "react";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { hardhat, sepolia } from "wagmi/chains";
-import { infuraProvider } from "wagmi/providers/infura";
+import { hardhat } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 type RainbowKitWrapperProps = {
 	children: ReactNode;
 };
 
-const { chains, publicClient } = configureChains(
-	[sepolia, hardhat],
-	[infuraProvider({ apiKey: __ENV__.infuraApiKey }), publicProvider()],
-);
+// const { chains, publicClient } = configureChains(
+// 	[sepolia, hardhat],
+// 	[infuraProvider({ apiKey: __ENV__.infuraApiKey }), publicProvider()],
+// );
+
+const { chains, publicClient, webSocketPublicClient } = configureChains([hardhat], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
 	appName: "My Dapp",
@@ -28,6 +29,7 @@ const wagmiConfig = createConfig({
 	autoConnect: false,
 	connectors,
 	publicClient,
+	webSocketPublicClient,
 });
 
 export const RainbowKitWrapper = ({ children }: RainbowKitWrapperProps) => (
