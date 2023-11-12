@@ -318,9 +318,7 @@ const abi = [
 ];
 
 export default function Home() {
-	const { connectedWallet } = useAppContext();
-
-	console.log(connectedWallet);
+	const context = useAppContext();
 
 	const { config } = usePrepareContractWrite({
 		address: contractAddress,
@@ -330,18 +328,14 @@ export default function Home() {
 
 	const { write } = useContractWrite(config);
 
-	// const { data, isError, isLoading } = useContractRead({
-	// 	address: contractAddress,
-	// 	abi,
-	// 	functionName: "workflowStatus",
-	// });
-
 	return (
 		<div>
-			<button type="button" disabled={!write} onClick={write}>
-				Start
-			</button>
 			<ConnectButton />
+			{context?.connectedWallet.isConnected ? (
+				<button type="button" disabled={!write} onClick={write}>
+					Start Proposals Registering
+				</button>
+			) : null}
 		</div>
 	);
 }

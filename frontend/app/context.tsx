@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext } from "react";
 import { useAccount } from "wagmi";
 import { GetAccountResult } from "wagmi/actions";
 
-type AppContextType = {
+export type AppContextType = {
 	connectedWallet: GetAccountResult;
 } | null;
 
