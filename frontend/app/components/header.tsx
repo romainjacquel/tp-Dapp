@@ -1,15 +1,13 @@
+import { Flex, Text } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Link from "next/link";
 
 const Header = () => (
-	<header className="bg-indigo-500 p-4 text-white">
-		<div className="container mx-auto flex justify-between items-center">
-			<Link href="/" className="text-2xl font-bold">
-				TP Dapp
-			</Link>
-			<ConnectButton />
-		</div>
-	</header>
+	<Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="teal.500" color="white">
+		<Text fontSize="25" fontWeight="bold">
+			TP Dapp
+		</Text>
+		<ConnectButton />
+	</Flex>
 );
 
 export default Header;

@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import { ChakraUiWrapper } from "./components/chakra-ui-wrapper";
 import Header from "./components/header";
 import { RainbowKitWrapper } from "./components/rainbowkit-wrapper";
 import { AppContextWrapper } from "./context";
-import "./globals.css";
+// import "./globals.css";
 
 type RootLayoutProps = {
 	children: ReactNode;
@@ -20,12 +21,14 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: RootLayoutProps) => (
 	<html lang="en">
 		<body className={inter.className}>
-			<RainbowKitWrapper>
-				<AppContextWrapper>
-					<Header />
-					{children}
-				</AppContextWrapper>
-			</RainbowKitWrapper>
+			<ChakraUiWrapper>
+				<RainbowKitWrapper>
+					<AppContextWrapper>
+						<Header />
+						{children}
+					</AppContextWrapper>
+				</RainbowKitWrapper>
+			</ChakraUiWrapper>
 		</body>
 	</html>
 );
