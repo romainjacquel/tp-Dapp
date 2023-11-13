@@ -319,6 +319,8 @@ const abi = [
 export default function Home() {
 	const connectedWallet = useConnectedWallet();
 
+	console.log(connectedWallet);
+
 	const { config } = usePrepareContractWrite({
 		address: contractAddress,
 		abi: abi,
@@ -328,7 +330,7 @@ export default function Home() {
 	const { write } = useContractWrite(config);
 
 	return (
-		<div>
+		<div className="bg-black">
 			<h1 className="text-red-500">Ma page du tp</h1>
 		</div>
 	);
