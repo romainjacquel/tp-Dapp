@@ -1,7 +1,6 @@
 "use client";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
-import { useAppContext } from "./context";
+import useConnectedWallet from "./hooks/use-connected-wallet";
 
 const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 const abi = [
@@ -318,7 +317,7 @@ const abi = [
 ];
 
 export default function Home() {
-	const context = useAppContext();
+	const connectedWallet = useConnectedWallet();
 
 	const { config } = usePrepareContractWrite({
 		address: contractAddress,
@@ -330,12 +329,7 @@ export default function Home() {
 
 	return (
 		<div>
-			<ConnectButton />
-			{context?.connectedWallet.isConnected ? (
-				<button type="button" disabled={!write} onClick={write}>
-					Start Proposals Registering
-				</button>
-			) : null}
+			<h1 className="text-red-500">Ma page du tp</h1>
 		</div>
 	);
 }

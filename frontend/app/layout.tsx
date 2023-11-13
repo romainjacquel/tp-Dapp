@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import Header from "./components/header";
+import { RainbowKitWrapper } from "./components/rainbowkit-wrapper";
 import { AppContextWrapper } from "./context";
-import { RainbowKitWrapper } from "./shared/rainbowkit-wrapper";
+import "./globals.css";
 
 type RootLayoutProps = {
 	children: ReactNode;
@@ -19,7 +21,10 @@ const RootLayout = ({ children }: RootLayoutProps) => (
 	<html lang="en">
 		<body className={inter.className}>
 			<RainbowKitWrapper>
-				<AppContextWrapper>{children}</AppContextWrapper>
+				<AppContextWrapper>
+					<Header />
+					{children}
+				</AppContextWrapper>
 			</RainbowKitWrapper>
 		</body>
 	</html>
