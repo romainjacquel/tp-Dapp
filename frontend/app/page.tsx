@@ -1,5 +1,5 @@
 "use client";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 
 const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
@@ -329,9 +329,18 @@ export default function Home() {
 
 	const { write } = useContractWrite(config);
 
+	// const { data, isError, isLoading } = useContractRead({
+	// 	address: contractAddress,
+	// 	abi,
+	// 	functionName: "workflowStatus",
+	// });
+
 	return (
-		<div className="bg-black">
+		<div>
 			<h1 className="text-red-500">Ma page du tp</h1>
+			<button type="button" disabled={!write} onClick={write}>
+				Start propasal registering
+			</button>
 		</div>
 	);
 }
