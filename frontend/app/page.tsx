@@ -1,8 +1,7 @@
 "use client";
 
 import { Container } from "@chakra-ui/react";
-import { useState } from "react";
-import { useContractRead, useWaitForTransaction } from "wagmi";
+import { useContractRead } from "wagmi";
 import { RegisterVoters } from "./components/register-voter";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import { contractAbi, contractAddress } from "./utils/contract";
@@ -17,6 +16,7 @@ enum WorkflowStatus {
 }
 
 export default function Home() {
+	// todo => Create component for conditional display if a wallet is connected
 	const connectedWallet = useConnectedWallet();
 
 	const { data, error, isLoading } = useContractRead({

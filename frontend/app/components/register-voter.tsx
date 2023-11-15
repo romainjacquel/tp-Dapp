@@ -1,11 +1,14 @@
 "use client";
 
 import { contractAbi, contractAddress } from "@/app/utils/contract";
-import { Button, FormControl, FormLabel, Grid, Heading, Input } from "@chakra-ui/react";
 import React from "react";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useHasMounted from "../hooks/use-has-mounted";
+import { Form } from "./shared/form";
+import { HeadLabel } from "./shared/head-label";
 
 export const RegisterVoters = () => {
+	const hasMounted = useHasMounted();
 	const { config: startProposalConfig } = usePrepareContractWrite({
 		address: contractAddress,
 		abi: contractAbi,
@@ -42,39 +45,20 @@ export const RegisterVoters = () => {
 	});
 
 	return (
-		<>
-			<Heading py="4" color="teal.500">
-				Register voters
-			</Heading>
-			<Grid templateRows="repeat(2, 1fr)" gap={4}>
-				<FormControl w="2xl">
-					<FormLabel>Voter address</FormLabel>
-					<Input type="text" placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266" />
-					{/* <FormHelperText>Enter a valid adress (ex: )</FormHelperText> */}
-				</FormControl>
-				<Grid templateColumns="repeat(2, 1fr)" gap={4}>
-					<Button
-						type="button"
-						isLoading={startProposalTransaction.isLoading}
-						loadingText="Transaction pending"
-						colorScheme="red"
-						variant="outline"
-						onClick={startProposalsRegistering.write}
-					>
-						Start Proposal Registering
-					</Button>
-					<Button
-						type="button"
-						onClick={addVoter.write}
-						isLoading={addVoterTransaction.isLoading}
-						loadingText="Submitting"
-						colorScheme="teal"
-						variant="solid"
-					>
-						Add voter
-					</Button>
-				</Grid>
-			</Grid>
-		</>
+		hasMounted && (
+			<>
+				<HeadLabel label="Register voters" />
+				<Form
+					actionFn={addVoter.write}
+					actionLabel="Add voter"
+					actionLoading={addVoterTransaction.isLoading}
+					formLabel="Voter address"
+					nextStepFn={startProposalsRegistering.write}
+					nextStepLabel="Start Proposal Registering"
+					nextStepLoading={startProposalTransaction.isLoading}
+					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+				/>
+			</>
+		)
 	);
 };
