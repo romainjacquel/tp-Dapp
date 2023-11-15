@@ -13,9 +13,7 @@ const AppContext = createContext<AppContextType>(null);
 export function AppContextWrapper({ children }: { children: ReactNode }) {
 	const wallet = useAccount();
 	const value = {
-		connectedWallet: {
-			...wallet,
-		},
+		connectedWallet: wallet,
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
