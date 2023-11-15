@@ -2,6 +2,7 @@
 
 import { Container } from "@chakra-ui/react";
 import { useContractRead } from "wagmi";
+import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import { contractAbi, contractAddress } from "./utils/contract";
@@ -28,10 +29,12 @@ export default function Home() {
 
 	console.log(data);
 
-	return (
+	return connectedWallet?.isConnected ? (
 		<Container maxW="8xl" centerContent>
 			{WorkflowStatus.RegisteringVoters === data && <RegisterVoters />}
-			{WorkflowStatus.ProposalsRegistrationStarted === data && <h1>TOOOOOOOOOOOOOOOO</h1>}
+			{WorkflowStatus.ProposalsRegistrationStarted === data && <RegisterProposal />}
 		</Container>
+	) : (
+		<h1>Not connected</h1>
 	);
 }

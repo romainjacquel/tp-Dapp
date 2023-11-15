@@ -1,6 +1,12 @@
 import { Button, FormControl, FormHelperText, FormLabel, Grid, Input } from "@chakra-ui/react";
+import React from "react";
 
 type FormProps = {
+	inputValue: string | number | null;
+	inputType: HTMLInputElement["type"];
+	setInputValue:
+		| React.Dispatch<React.SetStateAction<string | null>>
+		| React.Dispatch<React.SetStateAction<number | null>>;
 	formLabel: string;
 	placeholder: string;
 	nextStepLabel: string;
@@ -13,6 +19,9 @@ type FormProps = {
 };
 
 export const Form = ({
+	inputValue,
+	inputType,
+	setInputValue,
 	formLabel,
 	placeholder,
 	nextStepLabel,
@@ -26,7 +35,14 @@ export const Form = ({
 	<Grid templateRows="repeat(2, 1fr)" gap={4}>
 		<FormControl w="2xl">
 			<FormLabel>{formLabel}</FormLabel>
-			<Input type="text" placeholder={placeholder} />
+			<Input
+				type={inputType}
+				placeholder={placeholder}
+				value={inputValue}
+				onChange={(e) => {
+					setInputValue(e.target.value);
+				}}
+			/>
 			{textHelperLabel !== undefined && <FormHelperText>{textHelperLabel}</FormHelperText>}
 		</FormControl>
 		<Grid templateColumns="repeat(2, 1fr)" gap={4}>

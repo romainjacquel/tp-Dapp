@@ -1,14 +1,17 @@
 "use client";
 
 import { contractAbi, contractAddress } from "@/app/utils/contract";
-import React from "react";
+import React, { useState } from "react";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
 export const RegisterVoters = () => {
+	const [address, setAddress] = useState<string | null>(null);
+
 	const hasMounted = useHasMounted();
+
 	const { config: startProposalConfig } = usePrepareContractWrite({
 		address: contractAddress,
 		abi: contractAbi,
@@ -19,7 +22,14 @@ export const RegisterVoters = () => {
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "addVoter",
+		args: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
 	});
+
+	console.log(addVoterConfig);
+
+	// if (addVoterConfig) {
+	// 	addVoterConfig.request.args = ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"];
+	// }
 
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
 	const addVoter = useContractWrite(addVoterConfig);
@@ -44,13 +54,20 @@ export const RegisterVoters = () => {
 		},
 	});
 
+	console.log(address);
+
+	console.log(startProposalsRegistering.write, addVoter.write);
+
 	return (
 		hasMounted && (
 			<>
 				<HeadLabel label="Register voters" />
 				<Form
+					inputValue={address}
+					inputType="text"
+					setInputValue={setAddress}
 					actionFn={addVoter.write}
-					actionLabel="Add voter"
+					actionLabel="Add Voter"
 					actionLoading={addVoterTransaction.isLoading}
 					formLabel="Voter address"
 					nextStepFn={startProposalsRegistering.write}
