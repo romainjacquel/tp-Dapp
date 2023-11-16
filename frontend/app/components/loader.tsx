@@ -1,9 +1,9 @@
 import { Spinner } from '@chakra-ui/react'
 
-const Loader = ({isLoading} : {isLoading: string}) => {
+const Loader = () => {
   return (
       <>
-      {isLoading &&  <Spinner size='lg' /> }
+      <Spinner size='lg' /> 
       </>
   )
 }
