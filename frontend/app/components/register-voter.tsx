@@ -6,28 +6,31 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import useHasMounted from "../hooks/use-has-mounted";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
+import useConnectedWallet from "../hooks/use-connected-wallet";
+import Loader from "./loader";
 
 export const RegisterVoters = () => {
 	const [address, setAddress] = useState<string | null>(null);
 
+	const connectedWallet = useConnectedWallet();
+	
 	const hasMounted = useHasMounted();
-
-	const { config: startProposalConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
-		functionName: "startProposalsRegistering",
-	});
 	
 	const isValidEthAddress = (address: string) => {
 		const ethAddressRegex = /^0x[0-9a-fA-F]{40}$/;
 		return ethAddressRegex.test(address);
 		};
+	const { config: startProposalConfig } = usePrepareContractWrite({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "startProposalsRegistering",
+	});
 
 	const { config: addVoterConfig } = usePrepareContractWrite({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "addVoter",
-		args: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+		args: [connectedWallet?.address],
 	});
 
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
@@ -57,6 +60,8 @@ export const RegisterVoters = () => {
 		hasMounted && (
 			<>
 				<HeadLabel label="Register voters" />
+				{startProposalTransaction.isLoading ? <Loader/> 
+				:
 				<Form
 					inputValue={address}
 					inputType="text"
@@ -70,6 +75,8 @@ export const RegisterVoters = () => {
 					nextStepLoading={startProposalTransaction.isLoading}
 					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 				/>
+				
+				}
 			</>
 		)
 	);
