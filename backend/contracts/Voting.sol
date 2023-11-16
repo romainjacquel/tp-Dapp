@@ -71,6 +71,8 @@ contract Voting is Ownable {
         require(voters[_addr].isRegistered != true, "Already registered");
 
         voters[_addr].isRegistered = true;
+
+
         emit VoterRegistered(_addr);
     }
 
@@ -90,6 +92,7 @@ contract Voting is Ownable {
         Proposal memory proposal;
         proposal.description = _desc;
         proposalsArray.push(proposal);
+
         // proposalsArray.push(Proposal(_desc,0));
         emit ProposalRegistered(proposalsArray.length - 1);
     }
@@ -107,6 +110,10 @@ contract Voting is Ownable {
         voters[msg.sender].votedProposalId = _id;
         voters[msg.sender].hasVoted = true;
         proposalsArray[_id].voteCount++;
+
+         if (proposalsArray[_id].voteCount > proposalsArray[_id].voteCount) {
+            winningProposalID = _id;
+        }
 
         emit Voted(msg.sender, _id);
     }
