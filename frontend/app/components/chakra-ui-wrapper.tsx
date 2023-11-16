@@ -11,7 +11,9 @@ export function ChakraUiWrapper({
 }) {
 	return (
 		<CacheProvider>
-			<ChakraProvider>{children}</ChakraProvider>
+			<ChakraProvider toastOptions={{ defaultOptions: { duration: 6000, isClosable: true, position: "top-right" } }}>
+				{children}
+			</ChakraProvider>
 		</CacheProvider>
 	);
 }

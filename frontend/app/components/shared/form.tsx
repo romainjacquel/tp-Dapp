@@ -1,12 +1,10 @@
-import { Button, FormControl, FormHelperText, FormLabel, Grid, Input } from "@chakra-ui/react";
-import React from "react";
+import { Button, FormControl, FormHelperText, FormLabel, Grid, Input, InputProps } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 
 type FormProps = {
-	inputValue: string | number | null;
+	inputValue: InputProps["value"];
 	inputType: HTMLInputElement["type"];
-	setInputValue:
-		| React.Dispatch<React.SetStateAction<string | null>>
-		| React.Dispatch<React.SetStateAction<number | null>>;
+	setInputValue: Dispatch<SetStateAction<string | undefined>> | Dispatch<SetStateAction<number | undefined>>;
 	formLabel: string;
 	placeholder: string;
 	nextStepLabel: string;
@@ -39,8 +37,9 @@ export const Form = ({
 			<Input
 				type={inputType}
 				placeholder={placeholder}
-				value={inputValue as any}
+				value={inputValue}
 				onChange={(e) => {
+					// biome-ignore lint/suspicious/noExplicitAny: Hard to type this, too many types possibles.
 					setInputValue(e.target.value as any);
 				}}
 			/>
