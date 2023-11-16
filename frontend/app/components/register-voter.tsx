@@ -35,13 +35,13 @@ export const RegisterVoters = () => {
 		onSuccess: () =>
 			notification?.({
 				title: "Success",
-				description: "Voters registration started",
+				description: "Proposals registration started",
 				status: "success",
 			}),
 		onError: () =>
 			notification?.({
 				title: "Error",
-				description: "Can't start voters registration",
+				description: "Can't start proposals registration",
 				status: "error",
 			}),
 	});
