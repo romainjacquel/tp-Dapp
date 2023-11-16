@@ -1,13 +1,14 @@
 "use client";
 
 import { contractAbi, contractAddress } from "@/app/utils/contract";
-import React from "react";
+import React, { useState } from "react";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
 export const RegisterProposal = () => {
+	const [proposal, setProposal] = useState<number | null>(null);
 	const hasMounted = useHasMounted();
 
 	const { config: endProposalConfig } = usePrepareContractWrite({
@@ -32,10 +33,21 @@ export const RegisterProposal = () => {
 	const addProposal = useContractWrite(addProposalConfig);
 	const startVoting = useContractWrite(startVotingConfig);
 
+	const startVotingTransaction = useWaitForTransaction({
+		hash: startVoting.data?.hash,
+		onSuccess: (data) => {
+			console.log("startVoting Success", data);
+		},
+		onError: (error) => {
+			console.log("startVoting Error", error);
+		},
+	});
+
 	const endProposalTransaction = useWaitForTransaction({
 		hash: endProposalsRegistering.data?.hash,
 		onSuccess: (data) => {
 			console.log("endProposal Success", data);
+			if (startVoting.write) startVoting.write();
 		},
 		onError: (error) => {
 			console.log("endProposal Error", error);
@@ -52,23 +64,14 @@ export const RegisterProposal = () => {
 		},
 	});
 
-	const startVotingTransaction = useWaitForTransaction({
-		hash: startVoting.data?.hash,
-		onSuccess: (data) => {
-			console.log("startVoting Success", data);
-		},
-		onError: (error) => {
-			console.log("startVoting Error", error);
-		},
-	});
-
-	console.log(endProposalsRegistering.write, addProposal.write, startVoting.write);
-
 	return (
 		hasMounted && (
 			<>
 				<HeadLabel label="Register proposals" />
 				<Form
+					inputValue={proposal}
+					inputType="text"
+					setInputValue={setProposal}
 					actionFn={addProposal.write}
 					actionLabel="Add Proposal"
 					actionLoading={addProposalTransaction.isLoading}

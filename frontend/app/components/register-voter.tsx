@@ -25,12 +25,6 @@ export const RegisterVoters = () => {
 		args: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
 	});
 
-	console.log(addVoterConfig);
-
-	// if (addVoterConfig) {
-	// 	addVoterConfig.request.args = ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"];
-	// }
-
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
 	const addVoter = useContractWrite(addVoterConfig);
 
@@ -53,10 +47,6 @@ export const RegisterVoters = () => {
 			console.log("addVoter Error", error);
 		},
 	});
-
-	console.log(address);
-
-	console.log(startProposalsRegistering.write, addVoter.write);
 
 	return (
 		hasMounted && (

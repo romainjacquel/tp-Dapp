@@ -18,6 +18,7 @@ type FormProps = {
 	textHelperLabel?: string;
 };
 
+// todo => Fix any type
 export const Form = ({
 	inputValue,
 	inputType,
@@ -38,9 +39,9 @@ export const Form = ({
 			<Input
 				type={inputType}
 				placeholder={placeholder}
-				value={inputValue}
+				value={inputValue as any}
 				onChange={(e) => {
-					setInputValue(e.target.value);
+					setInputValue(e.target.value as any);
 				}}
 			/>
 			{textHelperLabel !== undefined && <FormHelperText>{textHelperLabel}</FormHelperText>}
