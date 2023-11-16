@@ -4,11 +4,13 @@ import { contractAbi, contractAddress } from "@/app/utils/contract";
 import React, { useState } from "react";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
+import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
 export const RegisterProposal = () => {
-	const [proposal, setProposal] = useState<string | null>(null);
+	const notification = useNotification();
+	const [proposal, setProposal] = useState<string | undefined>(undefined);
 	const hasMounted = useHasMounted();
 
 	const { config: endProposalConfig } = usePrepareContractWrite({
@@ -29,22 +31,34 @@ export const RegisterProposal = () => {
 
 	const endProposalTransaction = useWaitForTransaction({
 		hash: endProposalsRegistering.data?.hash,
-		onSuccess: (data) => {
-			console.log("End Proposal Success", data);
-		},
-		onError: (error) => {
-			console.log("endProposal Error", error);
-		},
+		onSuccess: () =>
+			notification?.({
+				title: "Success",
+				description: "Proposals registration ended",
+				status: "success",
+			}),
+		onError: () =>
+			notification?.({
+				title: "Error",
+				description: "Can't end proposals registration",
+				status: "error",
+			}),
 	});
 
 	const addProposalTransaction = useWaitForTransaction({
 		hash: addProposal.data?.hash,
-		onSuccess: (data) => {
-			console.log("addProposal Success", data);
-		},
-		onError: (error) => {
-			console.log("addProposal Error", error);
-		},
+		onSuccess: () =>
+			notification?.({
+				title: "Success",
+				description: "Add proposal successfully",
+				status: "success",
+			}),
+		onError: () =>
+			notification?.({
+				title: "Error",
+				description: "Can't add proposal",
+				status: "error",
+			}),
 	});
 
 	return (
