@@ -1,8 +1,9 @@
 "use client";
 
-import { contractAbi, contractAddress } from "@/app/utils/contract";
+import { baseConfig } from "@/app/utils/contract";
+import __ENV__ from "@/config";
 import React, { useState } from "react";
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
 import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
@@ -14,30 +15,25 @@ export const RegisterVoters = () => {
 
 	const hasMounted = useHasMounted();
 
+	// Prepare contract
 	const { config: startProposalConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
+		...baseConfig,
 		functionName: "startProposalsRegistering",
 	});
 
 	const { config: addVoterConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
+		...baseConfig,
 		functionName: "addVoter",
 		args: [address],
 	});
 
+	// Contract write
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
 	const addVoter = useContractWrite(addVoterConfig);
 
+	// Wait for transaction
 	const startProposalTransaction = useWaitForTransaction({
 		hash: startProposalsRegistering.data?.hash,
-		onSuccess: () =>
-			notification?.({
-				title: "Success",
-				description: "Proposals registration started",
-				status: "success",
-			}),
 		onError: () =>
 			notification?.({
 				title: "Error",
@@ -48,17 +44,34 @@ export const RegisterVoters = () => {
 
 	const addVoterTransaction = useWaitForTransaction({
 		hash: addVoter.data?.hash,
-		onSuccess: () =>
-			notification?.({
-				title: "Success",
-				description: "Add voter successfully",
-				status: "success",
-			}),
 		onError: () =>
 			notification?.({
 				title: "Error",
 				description: "Can't add voter",
 				status: "error",
+			}),
+	});
+
+	// Contract event
+	useContractEvent({
+		...baseConfig,
+		eventName: "VoterRegistered",
+		listener: () =>
+			notification?.({
+				title: "Success",
+				description: "Voter added successfully",
+				status: "success",
+			}),
+	});
+
+	useContractEvent({
+		...baseConfig,
+		eventName: "WorkflowStatusChange",
+		listener: () =>
+			notification?.({
+				title: "Success",
+				description: "Proposals registration started",
+				status: "success",
 			}),
 	});
 
@@ -72,12 +85,13 @@ export const RegisterVoters = () => {
 					setInputValue={setAddress}
 					actionFn={addVoter.write}
 					actionLabel="Add Voter"
-					actionLoading={addVoterTransaction.isLoading}
+					actionLoading={addVoter.isLoading || addVoterTransaction.isLoading}
 					formLabel="Voter address"
 					nextStepFn={startProposalsRegistering.write}
 					nextStepLabel="Start Proposal Registering"
-					nextStepLoading={startProposalTransaction.isLoading}
+					nextStepLoading={startProposalTransaction.isLoading || startProposalTransaction.isLoading}
 					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+					actionButtonLoadingText="Add Voter In Progress"
 				/>
 			</>
 		)

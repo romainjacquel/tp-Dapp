@@ -1,5 +1,5 @@
-export const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-export const contractAbi = [
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAbi = [
 	{
 		inputs: [],
 		stateMutability: "nonpayable",
@@ -311,3 +311,13 @@ export const contractAbi = [
 		type: "function",
 	},
 ];
+
+type BaseConfigType = {
+	address: `0x${string}`;
+	abi: typeof contractAbi;
+};
+
+export const baseConfig: BaseConfigType = {
+	address: contractAddress,
+	abi: contractAbi,
+};

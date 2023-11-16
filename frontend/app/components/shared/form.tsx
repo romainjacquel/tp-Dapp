@@ -13,10 +13,11 @@ type FormProps = {
 	actionLabel: string;
 	actionFn: (() => void) | undefined;
 	actionLoading: boolean;
+	nextStepButtonLoadingText?: string;
+	actionButtonLoadingText?: string;
 	textHelperLabel?: string;
 };
 
-// todo => Fix any type
 export const Form = ({
 	inputValue,
 	inputType,
@@ -30,6 +31,8 @@ export const Form = ({
 	actionFn,
 	actionLoading,
 	textHelperLabel,
+	nextStepButtonLoadingText = "Transaction Pending",
+	actionButtonLoadingText = "Submitting",
 }: FormProps) => (
 	<Grid templateRows="repeat(2, 1fr)" gap={4}>
 		<FormControl w="2xl">
@@ -49,7 +52,7 @@ export const Form = ({
 			<Button
 				type="button"
 				isLoading={nextStepLoading}
-				loadingText="Transaction pending"
+				loadingText={nextStepButtonLoadingText}
 				colorScheme="red"
 				variant="outline"
 				onClick={nextStepFn}
@@ -60,7 +63,7 @@ export const Form = ({
 				type="button"
 				onClick={actionFn}
 				isLoading={actionLoading}
-				loadingText="Submitting"
+				loadingText={actionButtonLoadingText}
 				colorScheme="teal"
 				variant="solid"
 			>
