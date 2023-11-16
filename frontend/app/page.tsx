@@ -4,6 +4,7 @@ import { Container } from "@chakra-ui/react";
 import { useContractRead } from "wagmi";
 import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
+import { StartVoting } from "./components/start-voting";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import { contractAbi, contractAddress } from "./utils/contract";
 
@@ -17,10 +18,9 @@ enum WorkflowStatus {
 }
 
 export default function Home() {
-	// todo => Create component for conditional display if a wallet is connected
 	const connectedWallet = useConnectedWallet();
 
-	const { data, error, isLoading } = useContractRead({
+	const { data } = useContractRead({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "workflowStatus",
@@ -33,6 +33,8 @@ export default function Home() {
 		<Container maxW="8xl" centerContent>
 			{WorkflowStatus.RegisteringVoters === data && <RegisterVoters />}
 			{WorkflowStatus.ProposalsRegistrationStarted === data && <RegisterProposal />}
+			{WorkflowStatus.ProposalsRegistrationEnded === data && <StartVoting />}
+			{WorkflowStatus.VotingSessionStarted === data && <h1>Voting session started</h1>}
 		</Container>
 	) : (
 		<h1>Not connected</h1>

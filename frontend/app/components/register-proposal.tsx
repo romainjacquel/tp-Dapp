@@ -8,7 +8,7 @@ import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
 export const RegisterProposal = () => {
-	const [proposal, setProposal] = useState<number | null>(null);
+	const [proposal, setProposal] = useState<string | null>(null);
 	const hasMounted = useHasMounted();
 
 	const { config: endProposalConfig } = usePrepareContractWrite({
@@ -21,33 +21,16 @@ export const RegisterProposal = () => {
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "addProposal",
-	});
-
-	const { config: startVotingConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
-		functionName: "startVotingSession",
+		args: [proposal],
 	});
 
 	const endProposalsRegistering = useContractWrite(endProposalConfig);
 	const addProposal = useContractWrite(addProposalConfig);
-	const startVoting = useContractWrite(startVotingConfig);
-
-	const startVotingTransaction = useWaitForTransaction({
-		hash: startVoting.data?.hash,
-		onSuccess: (data) => {
-			console.log("startVoting Success", data);
-		},
-		onError: (error) => {
-			console.log("startVoting Error", error);
-		},
-	});
 
 	const endProposalTransaction = useWaitForTransaction({
 		hash: endProposalsRegistering.data?.hash,
 		onSuccess: (data) => {
-			console.log("endProposal Success", data);
-			if (startVoting.write) startVoting.write();
+			console.log("End Proposal Success", data);
 		},
 		onError: (error) => {
 			console.log("endProposal Error", error);
@@ -79,7 +62,7 @@ export const RegisterProposal = () => {
 					nextStepFn={endProposalsRegistering.write}
 					nextStepLabel="End Proposal Registering"
 					nextStepLoading={endProposalTransaction.isLoading}
-					placeholder="The proposal id (ex: 1)"
+					placeholder="The proposal name (ex: foo)"
 				/>
 			</>
 		)

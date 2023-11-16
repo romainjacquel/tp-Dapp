@@ -22,7 +22,7 @@ export const RegisterVoters = () => {
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "addVoter",
-		args: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"],
+		args: [address],
 	});
 
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
