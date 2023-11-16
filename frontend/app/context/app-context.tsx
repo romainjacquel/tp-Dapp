@@ -1,10 +1,10 @@
 "use client";
 
+import { baseConfig } from "@/app/utils/contract";
 import { useToast } from "@chakra-ui/react";
 import { ReactNode, createContext, useContext } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { GetAccountResult } from "wagmi/actions";
-import { contractAbi, contractAddress } from "../utils/contract";
 
 export type AppContextType = {
 	connectedWallet: GetAccountResult;
@@ -18,8 +18,7 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 	const wallet = useAccount();
 
 	const { data } = useContractRead({
-		address: contractAddress,
-		abi: contractAbi,
+		...baseConfig,
 		functionName: "workflowStatus",
 		watch: true,
 	});
