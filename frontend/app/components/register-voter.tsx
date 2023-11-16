@@ -33,6 +33,13 @@ export const RegisterVoters = () => {
 		args: [address],
 	});
 
+	const { config: addVoterConfig } = usePrepareContractWrite({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "addVoter",
+		args: [connectedWallet?.address],
+	});
+
 	const startProposalsRegistering = useContractWrite(startProposalConfig);
 	const addVoter = useContractWrite(addVoterConfig);
 
@@ -43,16 +50,6 @@ export const RegisterVoters = () => {
 		},
 		onError: (error) => {
 			console.log("startProposal Error", error);
-		},
-	});
-
-	const addVoterTransaction = useWaitForTransaction({
-		hash: addVoter.data?.hash,
-		onSuccess: (data) => {
-			console.log("addVoter Success", data);
-		},
-		onError: (error) => {
-			console.log("addVoter Error", error);
 		},
 	});
 
