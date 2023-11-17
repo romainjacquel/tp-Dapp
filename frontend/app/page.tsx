@@ -20,7 +20,7 @@ export default function Home() {
 			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters />}
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
-			{WorkflowStatus.VotingSessionStarted === workflowStatus && <h1>Voting session started</h1>}
+			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotesTallied />}
 			{WorkflowStatus.VotingSessionEnded === workflowStatus && <EndVoting />}
 			{WorkflowStatus.VotesTallied === workflowStatus && <VotesTallied />}
 		</Container>

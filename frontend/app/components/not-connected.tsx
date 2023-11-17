@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { FaVoteYea } from "react-icons/fa";
 
 const NotConnected = () => {
@@ -14,9 +15,7 @@ const NotConnected = () => {
 						Cast your vote in a secure and decentralized way
 					</Text>
 				</Box>
-				<Button colorScheme="blue" size="lg">
-					Connect Wallet
-				</Button>
+				<ConnectButton />
 			</Flex>
 			<Box mt="8">
 				<Text fontSize="sm" color="gray.500">
