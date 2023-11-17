@@ -9,6 +9,7 @@ import { StartVoting } from "./components/start-voting";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";
+import VotesTallied from "./components/votesTallied";
 
 export default function Home() {
 	const connectedWallet = useConnectedWallet();
@@ -21,6 +22,7 @@ export default function Home() {
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
 			{WorkflowStatus.VotingSessionStarted === workflowStatus && <h1>Voting session started</h1>}
 			{WorkflowStatus.VotingSessionEnded === workflowStatus && <EndVoting />}
+			{WorkflowStatus.VotesTallied === workflowStatus && <VotesTallied />}
 		</Container>
 	) : (
 		<NotConnected />

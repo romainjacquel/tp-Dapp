@@ -1,15 +1,29 @@
-import { Alert, AlertIcon, Flex } from "@chakra-ui/react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Box, Button, Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
+import { FaVoteYea } from "react-icons/fa";
 
 const NotConnected = () => {
 	return (
-		<Flex direction="column" justifyContent="center" alignItems="center" height="50vh">
-			<Alert status="warning" width="30%" mb="1rem">
-				<AlertIcon />
-				Please connect your Wallet to our DApp.
-			</Alert>
-			<ConnectButton />
-		</Flex>
+		<Box textAlign="center" p="4">
+			<Flex direction="column" justifyContent="center" alignItems="center" height="70vh">
+				<Box mb="4">
+					<Icon as={FaVoteYea} boxSize="50px" color="teal.500" />
+					<Heading as="h1" fontSize="4xl" mt="4">
+						Welcome to our Decentralized Voting Platform
+					</Heading>
+					<Text fontSize="lg" mt="2">
+						Cast your vote in a secure and decentralized way
+					</Text>
+				</Box>
+				<Button colorScheme="blue" size="lg">
+					Connect Wallet
+				</Button>
+			</Flex>
+			<Box mt="8">
+				<Text fontSize="sm" color="gray.500">
+					© 2023 TP Dapp. All rights reserved.
+				</Text>
+			</Box>
+		</Box>
 	);
 };
 

@@ -19,6 +19,7 @@
 		"next": "14.0.1",
 		"react": "18",
 		"react-dom": "18",
+		"react-icons": "^4.12.0",
 		"viem": "1.18.9",
 		"wagmi": "1.4.5"
 	},
