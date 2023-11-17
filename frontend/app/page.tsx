@@ -7,6 +7,7 @@ import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
 import { StartVoting } from "./components/start-voting";
 import VotesTallied from "./components/votesTallied";
+import { VotingSession } from "./components/voting-session";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";
@@ -20,7 +21,7 @@ export default function Home() {
 			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters />}
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
-			{WorkflowStatus.VotingSessionStarted === workflowStatus && <h1>Voting session</h1>}
+			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotingSession />}
 			{WorkflowStatus.VotingSessionEnded === workflowStatus && <EndVoting />}
 			{WorkflowStatus.VotesTallied === workflowStatus && <VotesTallied />}
 		</Container>

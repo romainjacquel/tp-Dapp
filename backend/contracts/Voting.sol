@@ -27,7 +27,7 @@ contract Voting is Ownable {
     }
 
     WorkflowStatus public workflowStatus;
-    Proposal[] proposalsArray;
+    Proposal[] public proposalsArray;
     mapping(address => Voter) voters;
 
     event VoterRegistered(address voterAddress);
