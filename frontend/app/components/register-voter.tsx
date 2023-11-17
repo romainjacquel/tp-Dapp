@@ -61,7 +61,6 @@ export const RegisterVoters = () => {
 				title: "Success",
 				description: "Voter added successfully",
 				status: "success",
-				position: "bottom",
 			}),
 	});
 

@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { ChakraUiWrapper } from "./components/chakra-ui-wrapper";
 import Header from "./components/header";
 import { RainbowKitWrapper } from "./components/rainbowkit-wrapper";
+import Steps from "./components/steps";
 import { AppContextWrapper } from "./context/app-context";
 
 type RootLayoutProps = {
@@ -24,6 +25,7 @@ const RootLayout = ({ children }: RootLayoutProps) => (
 				<RainbowKitWrapper>
 					<AppContextWrapper>
 						<Header />
+						<Steps />
 						{children}
 					</AppContextWrapper>
 				</RainbowKitWrapper>
