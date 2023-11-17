@@ -26,12 +26,12 @@ export const RegisterVoters = () => {
     functionName: "startProposalsRegistering",
   });
 
-  const { config: addVoterConfig } = usePrepareContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "addVoter",
-    args: [connectedWallet?.address],
-  });
+	const { config: addVoterConfig } = usePrepareContractWrite({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "addVoter",
+		args: [address],
+	});
 
   const startProposalsRegistering = useContractWrite(startProposalConfig);
   const addVoter = useContractWrite(addVoterConfig);

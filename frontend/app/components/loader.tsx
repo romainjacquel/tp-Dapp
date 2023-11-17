@@ -1,11 +1,10 @@
-import { Spinner } from '@chakra-ui/react'
+import { Flex, Spinner } from "@chakra-ui/react";
 
 const Loader = () => {
   return (
-      <>
-      <Spinner size='lg' /> 
-      </>
-  )
-}
-
-export default Loader
+    <Flex p='2rem' justifyContent='center' alignItems='center'>
+      <Spinner size='xl' />
+    </Flex>
+  );
+};
+export default Loader;

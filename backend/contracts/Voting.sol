@@ -72,7 +72,6 @@ contract Voting is Ownable {
 
         voters[_addr].isRegistered = true;
 
-
         emit VoterRegistered(_addr);
     }
 
@@ -93,7 +92,6 @@ contract Voting is Ownable {
         proposal.description = _desc;
         proposalsArray.push(proposal);
 
-        // proposalsArray.push(Proposal(_desc,0));
         emit ProposalRegistered(proposalsArray.length - 1);
     }
 
