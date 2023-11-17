@@ -27,7 +27,7 @@ const Steps = () => {
 	const workflowStatus = useWorkflowStatus();
 
 	return hasMounted && connectedWallet?.address ? (
-		<Stepper size="lg" p="2rem" colorScheme="teal" index={workflowStatus ?? 0}>
+		<Stepper p="2rem" colorScheme="teal" index={workflowStatus ?? 0}>
 			{WORKFLOWS.map((workflow, index) => (
 				<Step key={index}>
 					<StepIndicator>
