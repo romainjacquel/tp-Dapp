@@ -1,11 +1,11 @@
 "use client";
 
 import { Container } from "@chakra-ui/react";
+import { EndVoting } from "./components/end-voting";
 import NotConnected from "./components/not-connected";
 import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
 import { StartVoting } from "./components/start-voting";
-import { EndVoting } from "./components/end-voting"
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";

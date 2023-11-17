@@ -38,8 +38,8 @@ export const EndVoting = () => {
 			}),
 	});
 
-  return (
-    <Button
+	return (
+		<Button
 			mt={4}
 			type="button"
 			isLoading={endVoting.isLoading || endVotingTransaction.isLoading}
@@ -50,7 +50,7 @@ export const EndVoting = () => {
 		>
 			End Voting Session
 		</Button>
-  )
-}
+	);
+};
 
-export default EndVoting
+export default EndVoting;

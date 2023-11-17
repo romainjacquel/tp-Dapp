@@ -28,14 +28,14 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		functionName: "winningProposalID",
 		watch: true,
 	});
-	
+
 	const notification = useToast();
 
 	const value = {
 		connectedWallet: wallet,
 		workflowStatus: Number(workflow),
 		winningProposalID: Number(winning),
-		notification
+		notification,
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
