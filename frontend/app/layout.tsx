@@ -4,8 +4,7 @@ import { ReactNode } from "react";
 import { ChakraUiWrapper } from "./components/chakra-ui-wrapper";
 import Header from "./components/header";
 import { RainbowKitWrapper } from "./components/rainbowkit-wrapper";
-import { AppContextWrapper } from "./context";
-// import "./globals.css";
+import { AppContextWrapper } from "./context/app-context";
 
 type RootLayoutProps = {
 	children: ReactNode;

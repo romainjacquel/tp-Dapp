@@ -1,83 +1,101 @@
 "use client";
 
-import { contractAbi, contractAddress } from "@/app/utils/contract";
+import { baseConfig } from "@/app/utils/contract";
+import __ENV__ from "@/config";
 import React, { useState } from "react";
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
+import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 import useConnectedWallet from "../hooks/use-connected-wallet";
 import Loader from "./loader";
 
 export const RegisterVoters = () => {
-  const [address, setAddress] = useState<string | null>(null);
+	const notification = useNotification();
+	const [address, setAddress] = useState<string | undefined>(undefined);
 
-  const connectedWallet = useConnectedWallet();
+	const hasMounted = useHasMounted();
 
-  const hasMounted = useHasMounted();
-  
-  const { config: startProposalConfig } = usePrepareContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "startProposalsRegistering",
-  });
+	// Prepare contract
+	const { config: startProposalConfig } = usePrepareContractWrite({
+		...baseConfig,
+		functionName: "startProposalsRegistering",
+	});
 
 	const { config: addVoterConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
+		...baseConfig,
 		functionName: "addVoter",
 		args: [address],
 	});
 
-  const startProposalsRegistering = useContractWrite(startProposalConfig);
-  const addVoter = useContractWrite(addVoterConfig);
+	// Contract write
+	const startProposalsRegistering = useContractWrite(startProposalConfig);
+	const addVoter = useContractWrite(addVoterConfig);
 
-  const startProposalTransaction = useWaitForTransaction({
-    hash: startProposalsRegistering.data?.hash,
-    onSuccess: (data) => {
-      console.log("startProposal Success", data);
-    },
-    onError: (error) => {
-      console.log("startProposal Error", error);
-    },
-  });
+	// Wait for transaction
+	const startProposalTransaction = useWaitForTransaction({
+		hash: startProposalsRegistering.data?.hash,
+		onError: () =>
+			notification?.({
+				title: "Error",
+				description: "Can't start proposals registration",
+				status: "error",
+			}),
+	});
 
-  const addVoterTransaction = useWaitForTransaction({
-    hash: addVoter.data?.hash,
-    onSuccess: (data) => {
-      console.log("addVoter Success", data);
-    },
-    onError: (error) => {
-      console.log("addVoter Error", error);
-    },
-  });
+	const addVoterTransaction = useWaitForTransaction({
+		hash: addVoter.data?.hash,
+		onError: () =>
+			notification?.({
+				title: "Error",
+				description: "Can't add voter",
+				status: "error",
+			}),
+	});
 
-  return (
-    hasMounted && (
-      <>
-        <HeadLabel label='Register voters' />
-        {startProposalTransaction.isLoading ? (
-          <Loader />
-        ) : (
-          <Form
-            inputValue={address}
-            inputType='text'
-            setInputValue={setAddress}
-            actionFn={addVoter.write}
-            actionLabel='Add Voter'
-            actionLoading={addVoterTransaction.isLoading}
-            formLabel='Voter address'
-            nextStepFn={startProposalsRegistering.write}
-            nextStepLabel='Start Proposal Registering'
-            nextStepLoading={startProposalTransaction.isLoading}
-            placeholder='0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-          />
-        )}
-      </>
-    )
-  );
+	// Contract event
+	useContractEvent({
+		...baseConfig,
+		eventName: "VoterRegistered",
+		listener: () =>
+			notification?.({
+				title: "Success",
+				description: "Voter added successfully",
+				status: "success",
+			}),
+	});
+
+	useContractEvent({
+		...baseConfig,
+		eventName: "WorkflowStatusChange",
+		listener: () =>
+			notification?.({
+				title: "Success",
+				description: "Proposals registration started",
+				status: "success",
+			}),
+	});
+
+	return (
+		hasMounted && (
+			<>
+				<HeadLabel label="Register voters" />
+				<Form
+					inputValue={address}
+					inputType="text"
+					setInputValue={setAddress}
+					actionFn={addVoter.write}
+					actionLabel="Add Voter"
+					actionLoading={addVoter.isLoading || addVoterTransaction.isLoading}
+					formLabel="Voter address"
+					nextStepFn={startProposalsRegistering.write}
+					nextStepLabel="Start Proposal Registering"
+					nextStepLoading={startProposalTransaction.isLoading || startProposalTransaction.isLoading}
+					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+					actionButtonLoadingText="Add Voter In Progress"
+				/>
+			</>
+		)
+	);
 };

@@ -1,31 +1,48 @@
+import { baseConfig } from "@/app/utils/contract";
 import { Button } from "@chakra-ui/react";
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
-import { contractAbi, contractAddress } from "../utils/contract";
+import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useNotification from "../hooks/use-notification";
 
 export const StartVoting = () => {
+	const notification = useNotification();
+
+	// Prepare contract
 	const { config: startVotingConfig } = usePrepareContractWrite({
-		address: contractAddress,
-		abi: contractAbi,
+		...baseConfig,
 		functionName: "startVotingSession",
 	});
 
+	// Contract write
 	const startVoting = useContractWrite(startVotingConfig);
 
+	// Wait for transaction
 	const startVotingTransaction = useWaitForTransaction({
 		hash: startVoting.data?.hash,
-		onSuccess: (data) => {
-			console.log("startVoting Success", data);
-		},
-		onError: (error) => {
-			console.log("startVoting Error", error);
-		},
+		onError: () =>
+			notification?.({
+				title: "Error",
+				description: "Can't start voting session",
+				status: "error",
+			}),
+	});
+
+	// Contract event
+	useContractEvent({
+		...baseConfig,
+		eventName: "WorkflowStatusChange",
+		listener: () =>
+			notification?.({
+				title: "Success",
+				description: "Voting session started",
+				status: "success",
+			}),
 	});
 
 	return (
 		<Button
 			mt={4}
 			type="button"
-			isLoading={startVotingTransaction.isLoading}
+			isLoading={startVoting.isLoading || startVotingTransaction.isLoading}
 			loadingText="Transaction pending"
 			colorScheme="red"
 			variant="outline"

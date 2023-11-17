@@ -1,12 +1,10 @@
-import { Button, FormControl, FormHelperText, FormLabel, Grid, Input } from "@chakra-ui/react";
-import React from "react";
+import { Button, FormControl, FormHelperText, FormLabel, Grid, Input, InputProps } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 
 type FormProps = {
-	inputValue: string | number | null;
+	inputValue: InputProps["value"];
 	inputType: HTMLInputElement["type"];
-	setInputValue:
-		| React.Dispatch<React.SetStateAction<string | null>>
-		| React.Dispatch<React.SetStateAction<number | null>>;
+	setInputValue: Dispatch<SetStateAction<string | undefined>> | Dispatch<SetStateAction<number | undefined>>;
 	formLabel: string;
 	placeholder: string;
 	nextStepLabel: string;
@@ -15,10 +13,11 @@ type FormProps = {
 	actionLabel: string;
 	actionFn: (() => void) | undefined;
 	actionLoading: boolean;
+	nextStepButtonLoadingText?: string;
+	actionButtonLoadingText?: string;
 	textHelperLabel?: string;
 };
 
-// todo => Fix any type
 export const Form = ({
 	inputValue,
 	inputType,
@@ -32,6 +31,8 @@ export const Form = ({
 	actionFn,
 	actionLoading,
 	textHelperLabel,
+	nextStepButtonLoadingText = "Transaction Pending",
+	actionButtonLoadingText = "Submitting",
 }: FormProps) => (
 	<Grid templateRows="repeat(2, 1fr)" gap={4}>
 		<FormControl w="2xl">
@@ -39,8 +40,9 @@ export const Form = ({
 			<Input
 				type={inputType}
 				placeholder={placeholder}
-				value={inputValue as any}
+				value={inputValue}
 				onChange={(e) => {
+					// biome-ignore lint/suspicious/noExplicitAny: Hard to type this, too many types possibles.
 					setInputValue(e.target.value as any);
 				}}
 			/>
@@ -50,7 +52,7 @@ export const Form = ({
 			<Button
 				type="button"
 				isLoading={nextStepLoading}
-				loadingText="Transaction pending"
+				loadingText={nextStepButtonLoadingText}
 				colorScheme="red"
 				variant="outline"
 				onClick={nextStepFn}
@@ -61,7 +63,7 @@ export const Form = ({
 				type="button"
 				onClick={actionFn}
 				isLoading={actionLoading}
-				loadingText="Submitting"
+				loadingText={actionButtonLoadingText}
 				colorScheme="teal"
 				variant="solid"
 			>

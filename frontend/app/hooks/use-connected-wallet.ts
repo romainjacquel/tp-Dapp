@@ -1,4 +1,4 @@
-import { useAppContext } from "../context";
+import { useAppContext } from "../context/app-context";
 
 const useConnectedWallet = () => {
 	const context = useAppContext();
