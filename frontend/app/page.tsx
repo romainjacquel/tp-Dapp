@@ -6,6 +6,8 @@ import { RegisterVoters } from "./components/register-voter";
 import { StartVoting } from "./components/start-voting";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import useWorkflowStatus from "./hooks/use-worflow-status";
+import Steps from "./components/steps";
+import NotConnected from "./components/not-connected";
 
 enum WorkflowStatus {
 	RegisteringVoters = 0,
@@ -21,13 +23,16 @@ export default function Home() {
 	const workflowStatus = useWorkflowStatus();
 
 	return connectedWallet?.isConnected ? (
+		<>
+		<Steps />
 		<Container maxW="8xl" centerContent>
 			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters />}
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
 			{WorkflowStatus.VotingSessionStarted === workflowStatus && <h1>Voting session started</h1>}
 		</Container>
+		</>
 	) : (
-		<h1>Not connected</h1>
+		<NotConnected/>
 	);
 }

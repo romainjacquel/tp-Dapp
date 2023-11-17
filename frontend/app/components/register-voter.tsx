@@ -8,8 +8,6 @@ import useHasMounted from "../hooks/use-has-mounted";
 import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
-import useConnectedWallet from "../hooks/use-connected-wallet";
-import Loader from "./loader";
 
 export const RegisterVoters = () => {
 	const notification = useNotification();
@@ -63,6 +61,7 @@ export const RegisterVoters = () => {
 				title: "Success",
 				description: "Voter added successfully",
 				status: "success",
+				position: "bottom",
 			}),
 	});
 

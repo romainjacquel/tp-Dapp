@@ -1,6 +1,5 @@
 import {
   Step,
-  StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
@@ -8,26 +7,19 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps,
   Box,
 } from "@chakra-ui/react";
+import useWorkflowStatus from "../hooks/use-worflow-status";
 
 const Steps = () => {
-  const steps = [
-    { title: "First", description: "Contact Info" },
-    { title: "Second", description: "Date & Time" },
-    { title: "Third", description: "Select Rooms" },
-  ];
 
-  const { activeStep, setActiveStep } = useSteps({
-    index: 1,
-    count: steps.length,
-  });
-
+  const workflowStatus = useWorkflowStatus()
+  const workflow = ["RegisteringVoters", "ProposalsRegistrationStarted", "ProposalsRegistrationEnded", "VotingSessionStarted", "VotingSessionEnded", "VotesTallied"]
+ 
   return (
-    <Stepper size='lg' index={activeStep}>
-      {steps.map((step, index) => (
-        <Step key={index} onClick={() => setActiveStep(index)}>
+    <Stepper size='lg' p="2rem" colorScheme="teal" index={workflowStatus ?? 0}>
+      {workflow.map((step, index) => (
+        <Step key={index}>
           <StepIndicator>
             <StepStatus
               complete={<StepIcon />}
@@ -37,8 +29,7 @@ const Steps = () => {
           </StepIndicator>
 
           <Box flexShrink='0'>
-            <StepTitle>{step.title}</StepTitle>
-            <StepDescription>{step.description}</StepDescription>
+            <StepTitle>{step}</StepTitle>
           </Box>
 
           <StepSeparator />
