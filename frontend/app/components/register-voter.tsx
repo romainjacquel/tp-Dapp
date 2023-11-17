@@ -89,7 +89,7 @@ export const RegisterVoters = () => {
 					formLabel="Voter address"
 					nextStepFn={startProposalsRegistering.write}
 					nextStepLabel="Start Proposal Registering"
-					nextStepLoading={startProposalTransaction.isLoading || startProposalTransaction.isLoading}
+					nextStepLoading={startProposalsRegistering.isLoading || startProposalTransaction.isLoading}
 					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 					actionButtonLoadingText="Add Voter In Progress"
 				/>
