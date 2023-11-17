@@ -9,6 +9,7 @@ import { GetAccountResult } from "wagmi/actions";
 export type AppContextType = {
 	connectedWallet: GetAccountResult;
 	workflowStatus: number;
+	winningProposalID: number;
 	notification: ReturnType<typeof useToast>;
 } | null;
 
@@ -17,9 +18,14 @@ const AppContext = createContext<AppContextType>(null);
 export function AppContextWrapper({ children }: { children: ReactNode }) {
 	const wallet = useAccount();
 
-	const { data } = useContractRead({
+	const { data: workflow } = useContractRead({
 		...baseConfig,
 		functionName: "workflowStatus",
+		watch: true,
+	});
+	const { data: winning } = useContractRead({
+		...baseConfig,
+		functionName: "winningProposalID",
 		watch: true,
 	});
 
@@ -27,7 +33,8 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 
 	const value = {
 		connectedWallet: wallet,
-		workflowStatus: Number(data),
+		workflowStatus: Number(workflow),
+		winningProposalID: Number(winning),
 		notification,
 	};
 

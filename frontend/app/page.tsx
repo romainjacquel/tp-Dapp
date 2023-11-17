@@ -1,6 +1,7 @@
 "use client";
 
 import { Container } from "@chakra-ui/react";
+import { EndVoting } from "./components/end-voting";
 import NotConnected from "./components/not-connected";
 import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
@@ -19,6 +20,7 @@ export default function Home() {
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
 			{WorkflowStatus.VotingSessionStarted === workflowStatus && <h1>Voting session started</h1>}
+			{WorkflowStatus.VotingSessionEnded === workflowStatus && <EndVoting />}
 		</Container>
 	) : (
 		<NotConnected />
