@@ -1,9 +1,13 @@
 import { baseConfig } from "@/app/utils/contract";
-import { Button } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useNotification from "../hooks/use-notification";
 
-export const StartVoting = () => {
+type StartVotingProps = {
+	isOwner: boolean;
+};
+
+export const StartVoting = ({ isOwner }: StartVotingProps) => {
 	const notification = useNotification();
 
 	// Prepare contract
@@ -38,7 +42,7 @@ export const StartVoting = () => {
 			}),
 	});
 
-	return (
+	return isOwner ? (
 		<Button
 			mt={4}
 			type="button"
@@ -50,5 +54,9 @@ export const StartVoting = () => {
 		>
 			Start Voting Session
 		</Button>
+	) : (
+		<Heading as="h2" size="lg" m="4">
+			The voting recording session will begin soon
+		</Heading>
 	);
 };

@@ -14,6 +14,7 @@ export type AppContextType = {
 	notification: ReturnType<typeof useToast>;
 	setProposals: Dispatch<SetStateAction<Proposal[]>>;
 	proposals: Proposal[];
+	owner: string;
 } | null;
 
 const AppContext = createContext<AppContextType>(null);
@@ -32,6 +33,10 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		functionName: "winningProposalID",
 		watch: true,
 	});
+	const { data: owner } = useContractRead({
+		...baseConfig,
+		functionName: "owner",
+	});
 
 	const notification = useToast();
 
@@ -42,6 +47,7 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		notification,
 		proposals,
 		setProposals,
+		owner: String(owner),
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

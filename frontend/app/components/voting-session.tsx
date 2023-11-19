@@ -16,14 +16,18 @@ import Voter from "../types/voter";
 import { HeadLabel } from "./shared/head-label";
 import { Table } from "./shared/table";
 
-export const VotingSession = () => {
+type VotingSessionProps = {
+	isOwner: boolean;
+};
+
+export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 	const connectedWallet = useConnectedWallet();
 	const winningProposalID = useWinningProposalId();
 	const notification = useNotification();
 	const [proposals] = useProposals();
 	const [selectedProposal, setSelectedProposal] = useState<number | null>(null);
 
-	// Contract reead
+	// Contract read
 	const { data } = useContractRead({
 		...baseConfig,
 		functionName: "getVoter",
@@ -100,7 +104,11 @@ export const VotingSession = () => {
 			<HeadLabel label="Register vote" />
 			{voter.hasVoted && (
 				<Text fontSize="md">
-					The current winning proposal is "{proposals[0].description}" (id: {winningProposalID})
+					The current winning proposal is{" "}
+					{winningProposalID && proposals[winningProposalID]
+						? `"${proposals[winningProposalID].description}" (id:
+					${winningProposalID})`
+						: winningProposalID}
 				</Text>
 			)}
 			<Table columns={["", "ID", "Description"]}>
@@ -121,17 +129,20 @@ export const VotingSession = () => {
 				))}
 			</Table>
 			<Flex as="div" w="2xl" align="center" justify="center" paddingTop="0.5rem" color="white" gap={4}>
-				<Button
-					width="100%"
-					type="button"
-					isLoading={endVoting.isLoading || endVotingTransaction.isLoading}
-					loadingText="End voting session in progress"
-					colorScheme="red"
-					variant="outline"
-					onClick={endVoting.write}
-				>
-					End vote registering
-				</Button>
+				{isOwner && (
+					<Button
+						width="100%"
+						type="button"
+						isLoading={endVoting.isLoading || endVotingTransaction.isLoading}
+						loadingText="End voting session in progress"
+						colorScheme="red"
+						variant="outline"
+						onClick={endVoting.write}
+					>
+						End vote registering
+					</Button>
+				)}
+
 				{voter.hasVoted ? (
 					<Text width="100%" fontSize="md" color="red">
 						You have already voted

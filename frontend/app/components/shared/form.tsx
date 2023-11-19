@@ -1,3 +1,4 @@
+import useIsOwner from "@/app/hooks/use-is-owner";
 import { Button, FormControl, FormHelperText, FormLabel, Grid, Input, InputProps } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -33,42 +34,59 @@ export const Form = ({
 	textHelperLabel,
 	nextStepButtonLoadingText = "Transaction Pending",
 	actionButtonLoadingText = "Submitting",
-}: FormProps) => (
-	<Grid templateRows="repeat(2, 1fr)" gap={4}>
-		<FormControl w="2xl">
-			<FormLabel>{formLabel}</FormLabel>
-			<Input
-				type={inputType}
-				placeholder={placeholder}
-				value={inputValue}
-				onChange={(e) => {
-					// biome-ignore lint/suspicious/noExplicitAny: Hard to type this, too many types possibles.
-					setInputValue(e.target.value as any);
-				}}
-			/>
-			{textHelperLabel !== undefined && <FormHelperText>{textHelperLabel}</FormHelperText>}
-		</FormControl>
-		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
-			<Button
-				type="button"
-				isLoading={nextStepLoading}
-				loadingText={nextStepButtonLoadingText}
-				colorScheme="red"
-				variant="outline"
-				onClick={nextStepFn}
-			>
-				{nextStepLabel}
-			</Button>
-			<Button
-				type="button"
-				onClick={actionFn}
-				isLoading={actionLoading}
-				loadingText={actionButtonLoadingText}
-				colorScheme="teal"
-				variant="solid"
-			>
-				{actionLabel}
-			</Button>
+}: FormProps) => {
+	const isOwner = useIsOwner();
+
+	return (
+		<Grid templateRows="repeat(2, 1fr)" gap={4}>
+			<FormControl w="2xl">
+				<FormLabel>{formLabel}</FormLabel>
+				<Input
+					type={inputType}
+					placeholder={placeholder}
+					value={inputValue}
+					onChange={(e) => {
+						// biome-ignore lint/suspicious/noExplicitAny: Hard to type this, too many types possibles.
+						setInputValue(e.target.value as any);
+					}}
+				/>
+				{textHelperLabel !== undefined && <FormHelperText>{textHelperLabel}</FormHelperText>}
+			</FormControl>
+			{isOwner ? (
+				<Grid templateColumns="repeat(2, 1fr)" gap={4}>
+					<Button
+						type="button"
+						isLoading={nextStepLoading}
+						loadingText={nextStepButtonLoadingText}
+						colorScheme="red"
+						variant="outline"
+						onClick={nextStepFn}
+					>
+						{nextStepLabel}
+					</Button>
+					<Button
+						type="button"
+						onClick={actionFn}
+						isLoading={actionLoading}
+						loadingText={actionButtonLoadingText}
+						colorScheme="teal"
+						variant="solid"
+					>
+						{actionLabel}
+					</Button>
+				</Grid>
+			) : (
+				<Button
+					type="button"
+					onClick={actionFn}
+					isLoading={actionLoading}
+					loadingText={actionButtonLoadingText}
+					colorScheme="teal"
+					variant="solid"
+				>
+					{actionLabel}
+				</Button>
+			)}
 		</Grid>
-	</Grid>
-);
+	);
+};

@@ -11,7 +11,11 @@ const WinningProposal = () => {
 		<Flex as="div" direction="column" align="center" justify="center">
 			<FaTrophy size={32} />
 			<Heading as="h2" size="lg" m="4">
-				The Winning Proposal ID is "{proposals[0].description}" (id: {winningProposalID})
+				The Winning Proposal ID is{" "}
+				{winningProposalID && proposals[winningProposalID]
+					? `"${proposals[winningProposalID].description}" (id:
+					${winningProposalID})`
+					: winningProposalID}
 			</Heading>
 		</Flex>
 	);

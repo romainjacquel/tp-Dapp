@@ -3,24 +3,26 @@
 import { Container } from "@chakra-ui/react";
 import NotConnected from "./components/not-connected";
 import { RegisterProposal } from "./components/register-proposal";
-import { RegisterVoters } from "./components/register-voter";
+import { RegisterVoters } from "./components/register-voters";
 import { StartVoting } from "./components/start-voting";
 import { VotingSession } from "./components/voting-session";
 import WinningProposal from "./components/winning-proposal";
 import useConnectedWallet from "./hooks/use-connected-wallet";
+import useIsOwner from "./hooks/use-is-owner";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";
 
 export default function Home() {
+	const isOwner = useIsOwner();
 	const connectedWallet = useConnectedWallet();
 	const workflowStatus = useWorkflowStatus();
 
 	return connectedWallet?.isConnected ? (
 		<Container maxW="8xl" centerContent>
-			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters />}
+			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters isOwner={isOwner} />}
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
-			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
-			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotingSession />}
+			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting isOwner={isOwner} />}
+			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotingSession isOwner={isOwner} />}
 			{WorkflowStatus.VotingSessionEnded === workflowStatus && <WinningProposal />}
 		</Container>
 	) : (

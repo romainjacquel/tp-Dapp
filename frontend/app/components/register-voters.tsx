@@ -2,6 +2,7 @@
 
 import { baseConfig } from "@/app/utils/contract";
 import __ENV__ from "@/config";
+import { Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
@@ -9,7 +10,11 @@ import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
-export const RegisterVoters = () => {
+type RegisterVotersProps = {
+	isOwner: boolean;
+};
+
+export const RegisterVoters = ({ isOwner }: RegisterVotersProps) => {
 	const notification = useNotification();
 	const [address, setAddress] = useState<string | undefined>(undefined);
 
@@ -76,7 +81,8 @@ export const RegisterVoters = () => {
 	});
 
 	return (
-		hasMounted && (
+		hasMounted &&
+		(isOwner ? (
 			<>
 				<HeadLabel label="Register voters" />
 				<Form
@@ -94,6 +100,10 @@ export const RegisterVoters = () => {
 					actionButtonLoadingText="Add Voter In Progress"
 				/>
 			</>
-		)
+		) : (
+			<Heading as="h2" size="lg" m="4">
+				Voters registration in progress
+			</Heading>
+		))
 	);
 };
