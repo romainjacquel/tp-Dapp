@@ -2,6 +2,7 @@
 
 import { baseConfig } from "@/app/utils/contract";
 import __ENV__ from "@/config";
+import { Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
@@ -9,7 +10,11 @@ import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
-export const RegisterVoters = () => {
+type RegisterVotersProps = {
+	isOwner: boolean;
+};
+
+export const RegisterVoters = ({ isOwner }: RegisterVotersProps) => {
 	const notification = useNotification();
 	const [address, setAddress] = useState<string | undefined>(undefined);
 
@@ -76,7 +81,8 @@ export const RegisterVoters = () => {
 	});
 
 	return (
-		hasMounted && (
+		hasMounted &&
+		(isOwner ? (
 			<>
 				<HeadLabel label="Register voters" />
 				<Form
@@ -89,11 +95,15 @@ export const RegisterVoters = () => {
 					formLabel="Voter address"
 					nextStepFn={startProposalsRegistering.write}
 					nextStepLabel="Start Proposal Registering"
-					nextStepLoading={startProposalTransaction.isLoading || startProposalTransaction.isLoading}
+					nextStepLoading={startProposalsRegistering.isLoading || startProposalTransaction.isLoading}
 					placeholder="0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
 					actionButtonLoadingText="Add Voter In Progress"
 				/>
 			</>
-		)
+		) : (
+			<Heading as="h2" size="lg" m="4">
+				Voters registration in progress
+			</Heading>
+		))
 	);
 };

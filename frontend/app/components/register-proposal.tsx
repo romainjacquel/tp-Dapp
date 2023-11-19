@@ -5,11 +5,13 @@ import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
 import useNotification from "../hooks/use-notification";
+import useProposals from "../hooks/use-proposals";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
 export const RegisterProposal = () => {
 	const notification = useNotification();
+	const [proposals, setProposals] = useProposals();
 	const [proposal, setProposal] = useState<string | undefined>(undefined);
 	const hasMounted = useHasMounted();
 
@@ -42,6 +44,11 @@ export const RegisterProposal = () => {
 
 	const addProposalTransaction = useWaitForTransaction({
 		hash: addProposal.data?.hash,
+		onSuccess: () => {
+			if (proposal) {
+				setProposals([...proposals, { description: proposal, id: proposals?.length ?? 0 }]);
+			}
+		},
 		onError: () =>
 			notification?.({
 				title: "Error",

@@ -2,20 +2,25 @@
 
 import { baseConfig } from "@/app/utils/contract";
 import { useToast } from "@chakra-ui/react";
-import { ReactNode, createContext, useContext } from "react";
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { GetAccountResult } from "wagmi/actions";
+import { Proposal } from "../types/proposal";
 
 export type AppContextType = {
 	connectedWallet: GetAccountResult;
 	workflowStatus: number;
 	winningProposalID: number;
 	notification: ReturnType<typeof useToast>;
+	setProposals: Dispatch<SetStateAction<Proposal[]>>;
+	proposals: Proposal[];
+	owner: string;
 } | null;
 
 const AppContext = createContext<AppContextType>(null);
 
 export function AppContextWrapper({ children }: { children: ReactNode }) {
+	const [proposals, setProposals] = useState<Proposal[]>([]);
 	const wallet = useAccount();
 
 	const { data: workflow } = useContractRead({
@@ -28,6 +33,10 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		functionName: "winningProposalID",
 		watch: true,
 	});
+	const { data: owner } = useContractRead({
+		...baseConfig,
+		functionName: "owner",
+	});
 
 	const notification = useToast();
 
@@ -36,6 +45,9 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		workflowStatus: Number(workflow),
 		winningProposalID: Number(winning),
 		notification,
+		proposals,
+		setProposals,
+		owner: String(owner),
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

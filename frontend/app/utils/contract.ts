@@ -231,6 +231,30 @@ const contractAbi = [
 		type: "function",
 	},
 	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		name: "proposalsArray",
+		outputs: [
+			{
+				internalType: "string",
+				name: "description",
+				type: "string",
+			},
+			{
+				internalType: "uint256",
+				name: "voteCount",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
 		inputs: [],
 		name: "renounceOwnership",
 		outputs: [],
@@ -260,13 +284,6 @@ const contractAbi = [
 	{
 		inputs: [],
 		name: "startVotingSession",
-		outputs: [],
-		stateMutability: "nonpayable",
-		type: "function",
-	},
-	{
-		inputs: [],
-		name: "tallyVotes",
 		outputs: [],
 		stateMutability: "nonpayable",
 		type: "function",

@@ -17,7 +17,7 @@ import useWorkflowStatus from "../hooks/use-worflow-status";
 import WorkflowStatus from "../types/workflow-status";
 
 const WORKFLOWS = Object.values(WorkflowStatus).flatMap((key) => {
-	if (typeof key === "number") return [];
+	if (typeof key === "number" || key === "VotingSessionEnded") return [];
 	return key;
 });
 
