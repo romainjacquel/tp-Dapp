@@ -1,13 +1,12 @@
 "use client";
 
 import { Container } from "@chakra-ui/react";
-import { EndVoting } from "./components/end-voting";
 import NotConnected from "./components/not-connected";
 import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voter";
 import { StartVoting } from "./components/start-voting";
-import VotesTallied from "./components/votesTallied";
 import { VotingSession } from "./components/voting-session";
+import WinningProposal from "./components/winning-proposal";
 import useConnectedWallet from "./hooks/use-connected-wallet";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";
@@ -22,8 +21,7 @@ export default function Home() {
 			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
 			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting />}
 			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotingSession />}
-			{WorkflowStatus.VotingSessionEnded === workflowStatus && <EndVoting />}
-			{WorkflowStatus.VotesTallied === workflowStatus && <VotesTallied />}
+			{WorkflowStatus.VotingSessionEnded === workflowStatus && <WinningProposal />}
 		</Container>
 	) : (
 		<NotConnected />

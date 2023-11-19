@@ -11,12 +11,14 @@ import {
 import useConnectedWallet from "../hooks/use-connected-wallet";
 import useNotification from "../hooks/use-notification";
 import useProposals from "../hooks/use-proposals";
+import useWinningProposalId from "../hooks/use-winning-proposal-id";
 import Voter from "../types/voter";
 import { HeadLabel } from "./shared/head-label";
 import { Table } from "./shared/table";
 
 export const VotingSession = () => {
 	const connectedWallet = useConnectedWallet();
+	const winningProposalID = useWinningProposalId();
 	const notification = useNotification();
 	const [proposals] = useProposals();
 	const [selectedProposal, setSelectedProposal] = useState<number | null>(null);
@@ -96,6 +98,11 @@ export const VotingSession = () => {
 	return (
 		<>
 			<HeadLabel label="Register vote" />
+			{voter.hasVoted && (
+				<Text fontSize="md">
+					The current winning proposal is "{proposals[0].description}" (id: {winningProposalID})
+				</Text>
+			)}
 			<Table columns={["", "ID", "Description"]}>
 				{proposals.map((proposal, index) => (
 					<Tr key={index}>
