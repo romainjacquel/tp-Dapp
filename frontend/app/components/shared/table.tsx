@@ -21,8 +21,8 @@ type TableProps = TableHeadProps & { children: ReactNode };
 
 export const Table = ({ columns, children }: TableProps) => {
 	return (
-		<TableContainer>
-			<ChakraUiTable variant="simple">
+		<TableContainer w="2xl">
+			<ChakraUiTable size="lg" variant="simple">
 				<TableHead columns={columns} />
 				<Tbody>{children}</Tbody>
 			</ChakraUiTable>
