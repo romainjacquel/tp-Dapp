@@ -3,7 +3,9 @@ import { WorkflowStatusEventArgs } from "../types/contract-event";
 import WorkflowStatus from "../types/workflow-status";
 
 const contractAddress =
-	__ENV__.environment === "development" ? __ENV__.contractAddressHardhat : __ENV__.contractAddressSepolia;
+	__ENV__.environment === "development"
+		? "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+		: "0x56ec41694a4e375a001fa6d64bbb8022d52edb92";
 
 const contractAbi = [
 	{
