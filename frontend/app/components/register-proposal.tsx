@@ -3,7 +3,9 @@
 import { baseConfig } from "@/app/utils/contract";
 import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useGetVoter from "../hooks/use-get-voter";
 import useHasMounted from "../hooks/use-has-mounted";
+import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
 import useProposals from "../hooks/use-proposals";
 import { Form } from "./shared/form";
@@ -14,6 +16,8 @@ export const RegisterProposal = () => {
 	const [proposals, setProposals] = useProposals();
 	const [proposal, setProposal] = useState<string | undefined>(undefined);
 	const hasMounted = useHasMounted();
+	const isOwner = useIsOwner();
+	const isVoter = useGetVoter()?.isRegistered;
 
 	// Prepare contract
 	const { config: endProposalConfig } = usePrepareContractWrite({
@@ -85,6 +89,8 @@ export const RegisterProposal = () => {
 			<>
 				<HeadLabel label="Register proposals" />
 				<Form
+					canAction={isVoter}
+					canNextStep={isOwner}
 					inputValue={proposal}
 					inputType="text"
 					setInputValue={setProposal}

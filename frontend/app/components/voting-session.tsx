@@ -1,41 +1,23 @@
 import { baseConfig } from "@/app/utils/contract";
 import { Button, Checkbox, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import { useState } from "react";
-import {
-	useContractEvent,
-	useContractRead,
-	useContractWrite,
-	usePrepareContractWrite,
-	useWaitForTransaction,
-} from "wagmi";
-import useConnectedWallet from "../hooks/use-connected-wallet";
+import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useGetVoter from "../hooks/use-get-voter";
+import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
 import useProposals from "../hooks/use-proposals";
 import useWinningProposalId from "../hooks/use-winning-proposal-id";
-import Voter from "../types/voter";
 import { HeadLabel } from "./shared/head-label";
 import { Table } from "./shared/table";
 
-type VotingSessionProps = {
-	isOwner: boolean;
-};
-
-export const VotingSession = ({ isOwner }: VotingSessionProps) => {
-	const connectedWallet = useConnectedWallet();
+export const VotingSession = () => {
 	const winningProposalID = useWinningProposalId();
 	const notification = useNotification();
 	const [proposals] = useProposals();
 	const [selectedProposal, setSelectedProposal] = useState<number | null>(null);
 
-	// Contract read
-	const { data } = useContractRead({
-		...baseConfig,
-		functionName: "getVoter",
-		watch: true,
-		args: [connectedWallet?.address],
-	});
-
-	const voter = data as Voter;
+	const voter = useGetVoter();
+	const isOwner = useIsOwner();
 
 	// Prepare contract
 	const { config: startVotingConfig } = usePrepareContractWrite({
@@ -102,21 +84,19 @@ export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 	return (
 		<>
 			<HeadLabel label="Register vote" />
-			{voter.hasVoted && (
-				<Text fontSize="md">
-					The current winning proposal is{" "}
-					{winningProposalID && proposals[winningProposalID]
-						? `"${proposals[winningProposalID].description}" (id:
+			<Text fontSize="md">
+				The current winning proposal is{" "}
+				{winningProposalID && proposals[winningProposalID]
+					? `"${proposals[winningProposalID].description}" (id:
 					${winningProposalID})`
-						: winningProposalID}
-				</Text>
-			)}
+					: winningProposalID}
+			</Text>
 			<Table columns={["", "ID", "Description"]}>
 				{proposals.map((proposal, index) => (
 					<Tr key={index}>
 						<Td>
 							<Checkbox
-								disabled={(selectedProposal !== proposal.id && selectedProposal !== null) || voter.hasVoted}
+								disabled={(selectedProposal !== proposal.id && selectedProposal !== null) || voter?.hasVoted}
 								onChange={(e) => {
 									if (e.target.checked) setSelectedProposal(proposal.id);
 									else setSelectedProposal(null);
@@ -143,24 +123,25 @@ export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 					</Button>
 				)}
 
-				{voter.hasVoted ? (
-					<Text width="100%" fontSize="md" color="red">
-						You have already voted
-					</Text>
-				) : (
-					<Button
-						width="100%"
-						type="button"
-						isDisabled={selectedProposal === null}
-						onClick={setVote.write}
-						isLoading={setVote.isLoading || setVoteTransaction.isLoading}
-						loadingText="Set vote in progress"
-						colorScheme="teal"
-						variant="solid"
-					>
-						Add vote
-					</Button>
-				)}
+				{voter?.isRegistered &&
+					(voter?.hasVoted ? (
+						<Text width="100%" fontSize="md" color="red">
+							You have already voted
+						</Text>
+					) : (
+						<Button
+							width="100%"
+							type="button"
+							isDisabled={selectedProposal === null}
+							onClick={setVote.write}
+							isLoading={setVote.isLoading || setVoteTransaction.isLoading}
+							loadingText="Set vote in progress"
+							colorScheme="teal"
+							variant="solid"
+						>
+							Add vote
+						</Button>
+					))}
 			</Flex>
 		</>
 	);
