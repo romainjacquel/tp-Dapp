@@ -4,6 +4,7 @@ import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from
 import useGetVoter from "../hooks/use-get-voter";
 import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
+import NotAuthorized from "./shared/not-authorized";
 
 export const StartVoting = () => {
 	const isOwner = useIsOwner();
@@ -47,6 +48,6 @@ export const StartVoting = () => {
 			The voting recording session will begin soon
 		</Heading>
 	) : (
-		<h1>Not authorized</h1>
+		<NotAuthorized />
 	);
 };

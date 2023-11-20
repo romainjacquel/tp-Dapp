@@ -1,7 +1,8 @@
 import { WorkflowStatusEventArgs } from "../types/contract-event";
 import WorkflowStatus from "../types/workflow-status";
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0x78d37F0f910375be3A7a487D8C66A427C79f0422";
 const contractAbi = [
 	{
 		inputs: [],
