@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DApp de Vote
 
-## Getting Started
+Cette DApp permet à ses utilisateurs de créer des propositions et de voter pour celles-ci de manière décentralisée.
 
-First, run the development server:
+## Technologie
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Vote Décentralisé:** Permet aux utilisateurs de voter de manière sécurisée et transparente.
+- **Intégration d'Hardhat:** Utilise Hardhat pour gérer la partie backend, la compilation des contrats intelligents, les tests, etc.
+- **Technologies Frontend:** Utilise Next.js, React, Chakra UI, Rainbowkit, et TypeScript pour offrir une interface utilisateur réactive et conviviale.
+
+## Fonctionnalités
+
+- Enregistrement des électeurs
+- Enregistrement des propositions
+- Session de vote
+- Comptabilisation des votes
+
+## Contract
+
+La faille a été corrigé comme suit: 
+
+```solidity
+if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount) {
+    winningProposalID = _id;
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Pour correction
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Lien vidéo: https://www.loom.com/share/1378e66338d34a13925d9e9d946562c6?sid=234b81c4-15cf-4e0f-97ce-3bad8059bc9d
+Lien Déploiement: https://tp-dapp.vercel.app/
+Déployé sur sépolia
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Groupe constitué de :
+Romain JACQUEL et
+Kassim BOUZOUBAA
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+Pour lancer localement cette application, assurez-vous d'avoir Node.js installé. Clonez le dépôt, puis exécutez les commandes suivantes :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Installation des dépendances
+yarn install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Lancement de l'application en mode développement
+yarn dev
