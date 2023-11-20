@@ -8,22 +8,45 @@ import { StartVoting } from "./components/start-voting";
 import { VotingSession } from "./components/voting-session";
 import WinningProposal from "./components/winning-proposal";
 import useConnectedWallet from "./hooks/use-connected-wallet";
-import useIsOwner from "./hooks/use-is-owner";
+import useIsAuthorized from "./hooks/use-is-authorized";
 import useWorkflowStatus from "./hooks/use-worflow-status";
 import WorkflowStatus from "./types/workflow-status";
 
+type RenderArgs = {
+	workflowStatus: number | undefined;
+	isAuthorized: boolean;
+};
+
+const render = ({ workflowStatus, isAuthorized }: RenderArgs) => {
+	switch (true) {
+		case WorkflowStatus.RegisteringVoters === workflowStatus && isAuthorized:
+			return <RegisterVoters />;
+		case WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && isAuthorized:
+			return <RegisterProposal />;
+		case WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && isAuthorized:
+			return <StartVoting />;
+		case WorkflowStatus.VotingSessionStarted === workflowStatus && isAuthorized:
+			return <VotingSession />;
+		case WorkflowStatus.VotingSessionEnded === workflowStatus && isAuthorized:
+			return <WinningProposal />;
+		default:
+			// Si l'utilisateur n'est ni ower, ni voter => on renvoit un composant not authorized.
+			if (!isAuthorized) return <h1>Not authorized</h1>;
+			throw new Error("Workflow not found");
+	}
+};
+
 export default function Home() {
-	const isOwner = useIsOwner();
 	const connectedWallet = useConnectedWallet();
 	const workflowStatus = useWorkflowStatus();
+	const isAuthorized = useIsAuthorized();
 
 	return connectedWallet?.isConnected ? (
 		<Container maxW="8xl" centerContent>
-			{WorkflowStatus.RegisteringVoters === workflowStatus && <RegisterVoters isOwner={isOwner} />}
-			{WorkflowStatus.ProposalsRegistrationStarted === workflowStatus && <RegisterProposal />}
-			{WorkflowStatus.ProposalsRegistrationEnded === workflowStatus && <StartVoting isOwner={isOwner} />}
-			{WorkflowStatus.VotingSessionStarted === workflowStatus && <VotingSession isOwner={isOwner} />}
-			{WorkflowStatus.VotingSessionEnded === workflowStatus && <WinningProposal />}
+			{render({
+				workflowStatus,
+				isAuthorized,
+			})}
 		</Container>
 	) : (
 		<NotConnected />

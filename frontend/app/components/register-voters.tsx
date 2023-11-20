@@ -6,15 +6,13 @@ import { Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useHasMounted from "../hooks/use-has-mounted";
+import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
 import { Form } from "./shared/form";
 import { HeadLabel } from "./shared/head-label";
 
-type RegisterVotersProps = {
-	isOwner: boolean;
-};
-
-export const RegisterVoters = ({ isOwner }: RegisterVotersProps) => {
+export const RegisterVoters = () => {
+	const isOwner = useIsOwner();
 	const notification = useNotification();
 	const [address, setAddress] = useState<string | undefined>(undefined);
 
@@ -86,6 +84,8 @@ export const RegisterVoters = ({ isOwner }: RegisterVotersProps) => {
 			<>
 				<HeadLabel label="Register voters" />
 				<Form
+					canAction={isOwner}
+					canNextStep={isOwner}
 					inputValue={address}
 					inputType="text"
 					setInputValue={setAddress}

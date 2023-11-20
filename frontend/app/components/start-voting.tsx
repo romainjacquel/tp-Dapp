@@ -1,13 +1,13 @@
 import { baseConfig } from "@/app/utils/contract";
 import { Button, Heading } from "@chakra-ui/react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useGetVoter from "../hooks/use-get-voter";
+import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
 
-type StartVotingProps = {
-	isOwner: boolean;
-};
-
-export const StartVoting = ({ isOwner }: StartVotingProps) => {
+export const StartVoting = () => {
+	const isOwner = useIsOwner();
+	const isVoter = useGetVoter()?.isRegistered;
 	const notification = useNotification();
 
 	// Prepare contract
@@ -54,9 +54,11 @@ export const StartVoting = ({ isOwner }: StartVotingProps) => {
 		>
 			Start Voting Session
 		</Button>
-	) : (
+	) : isVoter ? (
 		<Heading as="h2" size="lg" m="4">
 			The voting recording session will begin soon
 		</Heading>
+	) : (
+		<h1>Not authorized</h1>
 	);
 };
