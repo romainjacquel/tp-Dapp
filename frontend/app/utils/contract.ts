@@ -1,3 +1,6 @@
+import { WorkflowStatusEventArgs } from "../types/contract-event";
+import WorkflowStatus from "../types/workflow-status";
+
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = [
 	{
@@ -337,4 +340,27 @@ type BaseConfigType = {
 export const baseConfig: BaseConfigType = {
 	address: contractAddress,
 	abi: contractAbi,
+};
+
+type parseContractEventArgs = {
+	args: WorkflowStatusEventArgs;
+};
+
+export const parseContractEvent = ({ args }: parseContractEventArgs) => {
+	switch (true) {
+		case args.previousStatus === WorkflowStatus.RegisteringVoters &&
+			args.newStatus === WorkflowStatus.ProposalsRegistrationStarted:
+			return "Proposals registration started";
+		case args.previousStatus === WorkflowStatus.ProposalsRegistrationStarted &&
+			args.newStatus === WorkflowStatus.ProposalsRegistrationEnded:
+			return "Proposals registration ended";
+		case args.previousStatus === WorkflowStatus.ProposalsRegistrationEnded &&
+			args.newStatus === WorkflowStatus.VotingSessionStarted:
+			return "Voting session started";
+		case args.previousStatus === WorkflowStatus.VotingSessionStarted &&
+			args.newStatus === WorkflowStatus.VotingSessionEnded:
+			return "Voting session ended";
+		default:
+			return false;
+	}
 };

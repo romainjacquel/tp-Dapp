@@ -70,17 +70,6 @@ export const VotingSession = () => {
 			}),
 	});
 
-	useContractEvent({
-		...baseConfig,
-		eventName: "WorkflowStatusChange",
-		listener: () =>
-			notification?.({
-				title: "Success",
-				description: "Voting session ended",
-				status: "success",
-			}),
-	});
-
 	return (
 		<>
 			<HeadLabel label="Register vote" />

@@ -1,6 +1,6 @@
 import { baseConfig } from "@/app/utils/contract";
 import { Button, Heading } from "@chakra-ui/react";
-import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import useGetVoter from "../hooks/use-get-voter";
 import useIsOwner from "../hooks/use-is-owner";
 import useNotification from "../hooks/use-notification";
@@ -27,18 +27,6 @@ export const StartVoting = () => {
 				title: "Error",
 				description: "Can't start voting session",
 				status: "error",
-			}),
-	});
-
-	// Contract event
-	useContractEvent({
-		...baseConfig,
-		eventName: "WorkflowStatusChange",
-		listener: () =>
-			notification?.({
-				title: "Success",
-				description: "Voting session started",
-				status: "success",
 			}),
 	});
 
