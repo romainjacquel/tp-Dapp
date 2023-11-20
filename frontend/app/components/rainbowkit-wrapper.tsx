@@ -5,7 +5,6 @@ import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ReactNode } from "react";
 import { WagmiConfig, configureChains, createConfig, sepolia } from "wagmi";
-import { hardhat } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -14,7 +13,7 @@ type RainbowKitWrapperProps = {
 };
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-	[sepolia, hardhat],
+	[sepolia],
 	[infuraProvider({ apiKey: __ENV__.infuraApiKey }), publicProvider()],
 );
 
