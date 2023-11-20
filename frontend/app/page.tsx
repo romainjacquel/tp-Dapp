@@ -6,6 +6,7 @@ import { useContractEvent } from "wagmi";
 import NotConnected from "./components/not-connected";
 import { RegisterProposal } from "./components/register-proposal";
 import { RegisterVoters } from "./components/register-voters";
+import NotAuthorized from "./components/shared/not-authorized";
 import { StartVoting } from "./components/start-voting";
 import { VotingSession } from "./components/voting-session";
 import WinningProposal from "./components/winning-proposal";
@@ -35,7 +36,7 @@ const render = ({ workflowStatus, isAuthorized }: RenderArgs) => {
 			return <WinningProposal />;
 		default:
 			// Si l'utilisateur n'est ni ower, ni voter => on renvoit un composant not authorized.
-			if (!isAuthorized) return <h1>Not authorized</h1>;
+			if (!isAuthorized) return <NotAuthorized />;
 			throw new Error("Workflow not found");
 	}
 };
