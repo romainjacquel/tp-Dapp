@@ -1,5 +1,5 @@
 type Voter = {
-	isRegisted: boolean;
+	isRegistered: boolean;
 	hasVoted: boolean;
 	votedProposalId: number;
 };

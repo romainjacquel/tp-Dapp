@@ -1,8 +1,10 @@
 "use client";
 
 import { baseConfig } from "@/app/utils/contract";
+import { Heading } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useGetVoter from "../hooks/use-get-voter";
 import useHasMounted from "../hooks/use-has-mounted";
 import useNotification from "../hooks/use-notification";
 import useProposals from "../hooks/use-proposals";
@@ -14,6 +16,7 @@ export const RegisterProposal = () => {
 	const [proposals, setProposals] = useProposals();
 	const [proposal, setProposal] = useState<string | undefined>(undefined);
 	const hasMounted = useHasMounted();
+	const voter = useGetVoter();
 
 	// Prepare contract
 	const { config: endProposalConfig } = usePrepareContractWrite({
@@ -83,21 +86,29 @@ export const RegisterProposal = () => {
 	return (
 		hasMounted && (
 			<>
-				<HeadLabel label="Register proposals" />
-				<Form
-					inputValue={proposal}
-					inputType="text"
-					setInputValue={setProposal}
-					actionFn={addProposal.write}
-					actionLabel="Add Proposal"
-					actionLoading={addProposal.isLoading || addProposalTransaction.isLoading}
-					formLabel="Proposal name"
-					nextStepFn={endProposalsRegistering.write}
-					nextStepLabel="End Proposal Registering"
-					nextStepLoading={endProposalsRegistering.isLoading || endProposalTransaction.isLoading}
-					placeholder="The proposal name (ex: foo)"
-					actionButtonLoadingText="Add Proposal In Progress"
-				/>
+				{voter?.isRegistered ? (
+					<>
+						<HeadLabel label="Register proposals" />
+						<Form
+							inputValue={proposal}
+							inputType="text"
+							setInputValue={setProposal}
+							actionFn={addProposal.write}
+							actionLabel="Add Proposal"
+							actionLoading={addProposal.isLoading || addProposalTransaction.isLoading}
+							formLabel="Proposal name"
+							nextStepFn={endProposalsRegistering.write}
+							nextStepLabel="End Proposal Registering"
+							nextStepLoading={endProposalsRegistering.isLoading || endProposalTransaction.isLoading}
+							placeholder="The proposal name (ex: foo)"
+							actionButtonLoadingText="Add Proposal In Progress"
+						/>
+					</>
+				) : (
+					<Heading as="h2" size="lg" m="4">
+						Voters registration in progress
+					</Heading>
+				)}
 			</>
 		)
 	);

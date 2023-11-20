@@ -1,18 +1,11 @@
 import { baseConfig } from "@/app/utils/contract";
-import { Button, Checkbox, Flex, Td, Text, Tr } from "@chakra-ui/react";
+import { Button, Checkbox, Flex, Heading, Td, Text, Tr } from "@chakra-ui/react";
 import { useState } from "react";
-import {
-	useContractEvent,
-	useContractRead,
-	useContractWrite,
-	usePrepareContractWrite,
-	useWaitForTransaction,
-} from "wagmi";
-import useConnectedWallet from "../hooks/use-connected-wallet";
+import { useContractEvent, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import useGetVoter from "../hooks/use-get-voter";
 import useNotification from "../hooks/use-notification";
 import useProposals from "../hooks/use-proposals";
 import useWinningProposalId from "../hooks/use-winning-proposal-id";
-import Voter from "../types/voter";
 import { HeadLabel } from "./shared/head-label";
 import { Table } from "./shared/table";
 
@@ -21,21 +14,12 @@ type VotingSessionProps = {
 };
 
 export const VotingSession = ({ isOwner }: VotingSessionProps) => {
-	const connectedWallet = useConnectedWallet();
 	const winningProposalID = useWinningProposalId();
 	const notification = useNotification();
 	const [proposals] = useProposals();
 	const [selectedProposal, setSelectedProposal] = useState<number | null>(null);
 
-	// Contract read
-	const { data } = useContractRead({
-		...baseConfig,
-		functionName: "getVoter",
-		watch: true,
-		args: [connectedWallet?.address],
-	});
-
-	const voter = data as Voter;
+	const voter = useGetVoter();
 
 	// Prepare contract
 	const { config: startVotingConfig } = usePrepareContractWrite({
@@ -75,7 +59,7 @@ export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 				status: "error",
 			}),
 	});
-
+	console.log("OVTE", voter);
 	// Contract event
 	useContractEvent({
 		...baseConfig,
@@ -102,7 +86,7 @@ export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 	return (
 		<>
 			<HeadLabel label="Register vote" />
-			{voter.hasVoted && (
+			{voter?.isRegistered && (
 				<Text fontSize="md">
 					The current winning proposal is{" "}
 					{winningProposalID && proposals[winningProposalID]
@@ -111,57 +95,65 @@ export const VotingSession = ({ isOwner }: VotingSessionProps) => {
 						: winningProposalID}
 				</Text>
 			)}
-			<Table columns={["", "ID", "Description"]}>
-				{proposals.map((proposal, index) => (
-					<Tr key={index}>
-						<Td>
-							<Checkbox
-								disabled={(selectedProposal !== proposal.id && selectedProposal !== null) || voter.hasVoted}
-								onChange={(e) => {
-									if (e.target.checked) setSelectedProposal(proposal.id);
-									else setSelectedProposal(null);
-								}}
-							/>
-						</Td>
-						<Td>{proposal.id}</Td>
-						<Td>{proposal.description}</Td>
-					</Tr>
-				))}
-			</Table>
-			<Flex as="div" w="2xl" align="center" justify="center" paddingTop="0.5rem" color="white" gap={4}>
-				{isOwner && (
-					<Button
-						width="100%"
-						type="button"
-						isLoading={endVoting.isLoading || endVotingTransaction.isLoading}
-						loadingText="End voting session in progress"
-						colorScheme="red"
-						variant="outline"
-						onClick={endVoting.write}
-					>
-						End vote registering
-					</Button>
-				)}
+			{voter?.isRegistered ? (
+				<>
+					<Table columns={["", "ID", "Description"]}>
+						{proposals.map((proposal, index) => (
+							<Tr key={index}>
+								<Td>
+									<Checkbox
+										disabled={(selectedProposal !== proposal.id && selectedProposal !== null) || voter?.hasVoted}
+										onChange={(e) => {
+											if (e.target.checked) setSelectedProposal(proposal.id);
+											else setSelectedProposal(null);
+										}}
+									/>
+								</Td>
+								<Td>{proposal.id}</Td>
+								<Td>{proposal.description}</Td>
+							</Tr>
+						))}
+					</Table>
+					<Flex as="div" w="2xl" align="center" justify="center" paddingTop="0.5rem" color="white" gap={4}>
+						{isOwner && (
+							<Button
+								width="100%"
+								type="button"
+								isLoading={endVoting.isLoading || endVotingTransaction.isLoading}
+								loadingText="End voting session in progress"
+								colorScheme="red"
+								variant="outline"
+								onClick={endVoting.write}
+							>
+								End vote registering
+							</Button>
+						)}
 
-				{voter.hasVoted ? (
-					<Text width="100%" fontSize="md" color="red">
-						You have already voted
-					</Text>
-				) : (
-					<Button
-						width="100%"
-						type="button"
-						isDisabled={selectedProposal === null}
-						onClick={setVote.write}
-						isLoading={setVote.isLoading || setVoteTransaction.isLoading}
-						loadingText="Set vote in progress"
-						colorScheme="teal"
-						variant="solid"
-					>
-						Add vote
-					</Button>
-				)}
-			</Flex>
+						{voter?.hasVoted ? (
+							<Text width="100%" fontSize="md" color="red">
+								You have already voted
+							</Text>
+						) : (
+							<Button
+								width="100%"
+								type="button"
+								isDisabled={selectedProposal === null}
+								onClick={setVote.write}
+								isLoading={setVote.isLoading || setVoteTransaction.isLoading}
+								loadingText="Set vote in progress"
+								colorScheme="teal"
+								variant="solid"
+							>
+								Add vote
+							</Button>
+						)}
+					</Flex>
+				</>
+			) : (
+				<Heading as="h2" size="lg" m="4">
+					Voting session in progress
+				</Heading>
+			)}
 		</>
 	);
 };

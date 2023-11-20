@@ -6,6 +6,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useStat
 import { useAccount, useContractRead } from "wagmi";
 import { GetAccountResult } from "wagmi/actions";
 import { Proposal } from "../types/proposal";
+import Voter from "../types/voter";
 
 export type AppContextType = {
 	connectedWallet: GetAccountResult;
@@ -15,6 +16,7 @@ export type AppContextType = {
 	setProposals: Dispatch<SetStateAction<Proposal[]>>;
 	proposals: Proposal[];
 	owner: string;
+	voter: Voter;
 } | null;
 
 const AppContext = createContext<AppContextType>(null);
@@ -37,6 +39,12 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		...baseConfig,
 		functionName: "owner",
 	});
+	const { data: voter } = useContractRead({
+		...baseConfig,
+		functionName: "getVoter",
+		watch: true,
+		args: [wallet?.address],
+	});
 
 	const notification = useToast();
 
@@ -48,6 +56,7 @@ export function AppContextWrapper({ children }: { children: ReactNode }) {
 		proposals,
 		setProposals,
 		owner: String(owner),
+		voter: voter as Voter,
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
