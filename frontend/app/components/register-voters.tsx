@@ -67,17 +67,6 @@ export const RegisterVoters = () => {
 			}),
 	});
 
-	useContractEvent({
-		...baseConfig,
-		eventName: "WorkflowStatusChange",
-		listener: () =>
-			notification?.({
-				title: "Success",
-				description: "Proposals registration started",
-				status: "success",
-			}),
-	});
-
 	return (
 		hasMounted &&
 		(isOwner ? (

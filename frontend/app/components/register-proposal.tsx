@@ -73,17 +73,6 @@ export const RegisterProposal = () => {
 			}),
 	});
 
-	useContractEvent({
-		...baseConfig,
-		eventName: "WorkflowStatusChange",
-		listener: () =>
-			notification?.({
-				title: "Success",
-				description: "Proposals registration ended",
-				status: "success",
-			}),
-	});
-
 	return (
 		hasMounted && (
 			<>
