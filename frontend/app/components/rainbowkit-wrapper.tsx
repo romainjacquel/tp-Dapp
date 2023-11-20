@@ -4,6 +4,7 @@ import __ENV__ from "@/config";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ReactNode } from "react";
+import { hardhat } from "viem/chains";
 import { WagmiConfig, configureChains, createConfig, sepolia } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
@@ -12,16 +13,20 @@ type RainbowKitWrapperProps = {
 	children: ReactNode;
 };
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-	[sepolia],
-	[infuraProvider({ apiKey: __ENV__.infuraApiKey }), publicProvider()],
-);
+const config = {
+	network: [__ENV__.environment === "development" ? hardhat : sepolia],
+	providers:
+		__ENV__.environment === "development"
+			? [publicProvider()]
+			: [infuraProvider({ apiKey: __ENV__.infuraApiKey }), publicProvider()],
+};
 
-// const { chains, publicClient, webSocketPublicClient } = configureChains([hardhat], [publicProvider()]);
+// biome-ignore lint/suspicious/noExplicitAny: Hard to type, need to fix this later
+const { chains, publicClient, webSocketPublicClient } = configureChains(config.network, config.providers as any);
 
 const { connectors } = getDefaultWallets({
 	appName: "My Dapp",
-	projectId: __ENV__.walletConnectApiKEy,
+	projectId: __ENV__.walletConnectApiKey,
 	chains,
 });
 
